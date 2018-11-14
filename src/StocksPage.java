@@ -47,7 +47,7 @@ public class StocksPage {
         TableColumn<Items, String> typeCol=new TableColumn<>("Type");
         TableColumn<Items, String> nameCol=new TableColumn<>("Name");
         TableColumn<Items, Integer> quanCol=new TableColumn<>("Quantity");
-        TableColumn<Items, Double> costCol=new TableColumn<>("Price");
+        TableColumn<Items, Double> costCol=new TableColumn<>("Price (RM)");
         TableColumn<Items, Date> dateCol=new TableColumn<>("Date Added");
         tableView.getColumns().addAll(typeCol,nameCol,quanCol,costCol,dateCol);
         typeCol.setCellValueFactory(new PropertyValueFactory<>("itemType"));
@@ -145,7 +145,7 @@ public class StocksPage {
         });
 
         // another button to go back to previous screen
-        Button prevButton = new Button("Go back");
+        Button prevButton = new Button("Back to menu");
         prevButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
