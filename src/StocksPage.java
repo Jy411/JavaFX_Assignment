@@ -1,4 +1,6 @@
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -22,6 +24,7 @@ import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 
 public class StocksPage {
 
@@ -64,10 +67,11 @@ public class StocksPage {
         File itemsLog = new File("itemsLog.txt");
         BufferedReader bufferedReader = new BufferedReader(new FileReader(itemsLog));
         String readLine = "";
-        System.out.println("Reading File with BufferedReader");
+        System.out.println("Loading data from itemsLog.txt");
         // clears the table again so that there are no duplicates
         data = FXCollections.observableArrayList();
         while ((readLine = bufferedReader.readLine()) != null){
+            // Splits the string read into tokens
             String delimiter = ",";
             String[] tokens = readLine.split(delimiter);
             String itemType = tokens[0];
@@ -75,6 +79,7 @@ public class StocksPage {
             int itemQuan = Integer.parseInt(tokens[2]);
             double itemCost = Double.parseDouble(tokens[3]);
             String itemDate = tokens[4];
+            // Use tokens to create Items object
             Items item = new Items(itemType,itemName,itemQuan,itemCost,itemDate);
             if (data.contains(item)){
                 System.out.println("EXISTS");
@@ -94,30 +99,41 @@ public class StocksPage {
             public void handle(ActionEvent event) {
 
                 VBox itemsInfo = new VBox();
+                itemsInfo.setAlignment(Pos.CENTER);
                 itemsInfo.setMinSize(250,300);
                 itemsInfo.setSpacing(8);
                 itemsInfo.setPadding(new Insets(10,10,10,10));
 
-                Label itemType=new Label("Type: ");
-                Label itemName=new Label("Name: ");
-                Label itemQuan=new Label("Quantity: ");
-                Label itemCost=new Label("Cost: ");
+                Label itemType=new Label("Type");
+                itemType.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+                Label itemName=new Label("Name");
+                itemName.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+                Label itemQuan=new Label("Quantity");
+                itemQuan.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+                Label itemCost=new Label("Cost");
+                itemCost.setFont(Font.font("Arial", FontWeight.BOLD, 15));
                 ComboBox itemTypeBox = new ComboBox();
                 itemTypeBox.getItems().addAll("Beverages", "Bakery", "Canned", "Dairy", "Dry/Baking", "Frozen Foods", "Meat",
                         "Produce", "Cleaning", "Paper Goods", "Personal Care", "Other");
                 TextField itemNameField=new TextField();
                 TextField itemQuanField=new TextField();
                 TextField itemCostField=new TextField();
-                Button add=new Button("Add");
 
-                itemsInfo.getChildren().addAll(itemType,itemTypeBox,itemName,itemNameField,itemQuan,itemQuanField,itemCost,itemCostField,add);
+                HBox hBox = new HBox();
+                Button add=new Button("Add");
+                Button back=new Button("Back");
+                hBox.setAlignment(Pos.CENTER);
+                hBox.setSpacing(5);
+                hBox.getChildren().addAll(add,back);
+
+                itemsInfo.getChildren().addAll(itemType,itemTypeBox,itemName,itemNameField,itemQuan,itemQuanField,itemCost,itemCostField,hBox);
 
                 Scene scene=new Scene(itemsInfo);
                 Stage stage=new Stage();
                 stage.setScene(scene);
                 stage.show();
 
-                // add button functionality
+                // add button functionality to add items
                 add.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
@@ -141,11 +157,98 @@ public class StocksPage {
                         stage.close();
                     }
                 });
+
+                // Goes back to table
+                back.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        // closes the add item window
+                        stage.close();
+                    }
+                });
+
             }
         });
 
+        // button to remove items
+        Button removeButton = new Button("Remove Item");
+        removeButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                VBox removeItem = new VBox();
+                removeItem.setMinSize(250,300);
+                removeItem.setSpacing(8);
+                removeItem.setPadding(new Insets(10,10,10,10));
+
+                // Dropdown to show all items in inventory
+                ComboBox itemNameBox = new ComboBox();
+                File itemsLog = new File("itemsLog.txt");
+                // HashMap to store Item name and its value
+                HashMap<String,Integer> itemNameQuan = new HashMap<>();
+                try {
+                    BufferedReader bufferedReader = new BufferedReader(new FileReader(itemsLog));
+                    String readLine = "";
+                    while ((readLine = bufferedReader.readLine()) != null){
+                        // Splits the string read into tokens
+                        String delimiter = ",";
+                        String[] tokens = readLine.split(delimiter);
+                        String itemType = tokens[0];
+                        String itemName = tokens[1];
+                        int itemQuan = Integer.parseInt(tokens[2]);
+                        double itemCost = Double.parseDouble(tokens[3]);
+                        String itemDate = tokens[4];
+
+                        // adds all item names to dropdown menu
+                        itemNameBox.getItems().addAll(itemName);
+                        // adds item and quantity pair into HashMap
+                        itemNameQuan.put(itemName, itemQuan);
+                    }
+                    // labels for dropdown and fields
+                    Label dropdownLabel = new Label("Item Name");
+                    dropdownLabel.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+                    Label quantityLabel = new Label("Quantity");
+                    quantityLabel.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+                    Label itemQuanLabel = new Label();
+
+
+
+
+
+                    removeItem.getChildren().addAll(dropdownLabel, itemNameBox, quantityLabel, itemQuanLabel);
+                    removeItem.setAlignment(Pos.TOP_CENTER);
+                    removeItem.setSpacing(5);
+
+                    // change listener for dropdown box
+                    itemNameBox.valueProperty().addListener(new ChangeListener() {
+                        @Override
+                        public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+
+                            if (itemNameQuan.containsKey(newValue.toString())){
+                                // gets value of key
+                                int quantity = itemNameQuan.get(newValue.toString());
+                                itemQuanLabel.setText(Integer.toString(quantity));
+                            }
+
+
+                            System.out.println(oldValue);
+                            System.out.println(newValue);
+                        }
+                    });
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                Scene scene = new Scene(removeItem);
+                Stage stage = new Stage();
+                stage.setScene(scene);
+                stage.show();
+            }
+        });
+
+
         // another button to go back to previous screen
-        Button prevButton = new Button("Back to menu");
+        Button prevButton = new Button("Back");
         prevButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -161,7 +264,8 @@ public class StocksPage {
         hBox.setSpacing(10);
         addButton.setId("menuButton");
         prevButton.setId("menuButton");
-        hBox.getChildren().addAll(addButton,prevButton);
+        removeButton.setId("menuButton");
+        hBox.getChildren().addAll(addButton,removeButton,prevButton);
         hBox.setAlignment(Pos.CENTER);
         borderPane.setBottom(hBox);
 

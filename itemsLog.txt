@@ -1,2 +1,5 @@
 Canned,Fish,23,5.0,14/11/18 15:06
 Dairy,Milk,3,4.0,14/11/18 15:09
+Personal Care,Toothbrush,20,4.0,14/11/18 15:18
+Other,Cake,2,2.0,14/11/18 15:18
+Frozen Foods,Chicken,2,10.0,14/11/18 15:18
