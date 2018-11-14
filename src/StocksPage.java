@@ -20,11 +20,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 
 public class StocksPage {
 
-    private static final ObservableList<Items> data = FXCollections.observableArrayList();
+    private static ObservableList<Items> data = FXCollections.observableArrayList();
 
     public StocksPage(Stage primaryStage) throws IOException {
         // The main borderpane which will hold everything else
@@ -59,19 +60,30 @@ public class StocksPage {
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         tableView.setStyle("-fx-background-color: #f0f4f5");
 
-//        // File reader to read files to table
-//        FileReader fileReader = new FileReader("itemsLog.txt");
-//        BufferedReader bufferedReader = new BufferedReader(fileReader);
-//
-//        int i = bufferedReader.read();
-//        while((i!=-1)){
-//            // INFINITE LOOP
-//            String line = bufferedReader.readLine();
-//            System.out.println(line);
-//        }
-
-
-
+        // File reader to read itemsLog.txt line by line and add to Table
+        File itemsLog = new File("itemsLog.txt");
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(itemsLog));
+        String readLine = "";
+        System.out.println("Reading File with BufferedReader");
+        // clears the table again so that there are no duplicates
+        data = FXCollections.observableArrayList();
+        while ((readLine = bufferedReader.readLine()) != null){
+            String delimiter = ",";
+            String[] tokens = readLine.split(delimiter);
+            String itemType = tokens[0];
+            String itemName = tokens[1];
+            int itemQuan = Integer.parseInt(tokens[2]);
+            double itemCost = Double.parseDouble(tokens[3]);
+            String itemDate = tokens[4];
+            Items item = new Items(itemType,itemName,itemQuan,itemCost,itemDate);
+            if (data.contains(item)){
+                System.out.println("EXISTS");
+            }
+            else if (!data.contains(item)){
+                data.add(item);
+            }
+        }
+        tableView.setItems(data);
 
         // button at bottom to add stuff
         Button addButton = new Button("Add Item");

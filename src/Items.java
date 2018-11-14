@@ -16,8 +16,8 @@ public class Items {
 
     @Override
     public String toString() {
-        return "Type: " + itemType + ", " + "Name: " + itemName + ", " + "Quantity: " + itemQuantity + ", " + "Cost: " + itemCost
-                + ", " + "Date: " + dateAdded + "\n";
+        return itemType + "," + itemName + "," + itemQuantity + "," + itemCost
+                + "," + dateAdded + "\n";
     }
 
     public String getDateAdded() {

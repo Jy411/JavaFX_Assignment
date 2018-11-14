@@ -102,9 +102,6 @@ public class LoginPage extends Application {
         if (loginInfo.createNewFile()){
             System.out.println("File created");
         }
-        else{
-            System.out.println("File already exists");
-        }
         FileWriter writer = new FileWriter(loginInfo, true);
 
         // admin login function brings to admin page

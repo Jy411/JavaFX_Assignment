@@ -1,8 +1,1 @@
-Type: Canned, Name: Tuna, Quantity: 1, Cost: 2.0, Date: 30/10/18 08:46
-Type: Dairy, Name: Milk, Quantity: 3, Cost: 4.0, Date: 30/10/18 08:46
-Type: Bakery, Name: FIsh, Quantity: 2, Cost: 44.0, Date: 13/11/18 20:15
-Type: Canned, Name: Tuna, Quantity: 2, Cost: 4.0, Date: 14/11/18 09:06
-Type: Bakery, Name: Bun, Quantity: 2, Cost: 4.0, Date: 14/11/18 09:06
-Type: Beverages, Name: f, Quantity: 23, Cost: 3.0, Date: 14/11/18 09:17
-Type: Meat, Name: Chicken, Quantity: 2, Cost: 4.0, Date: 14/11/18 09:20
-Type: Beverages, Name: 23, Quantity: 4, Cost: 4.0, Date: 14/11/18 09:22
+Canned,Fish,23,5.0,14/11/18 15:06

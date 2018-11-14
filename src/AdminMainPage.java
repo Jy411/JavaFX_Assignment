@@ -96,7 +96,6 @@ public class AdminMainPage {
             System.out.println("File created");
         }
         else{
-            System.out.println("File already exists");
             String st;
             while ((st = bufferedReader.readLine()) != null){
                 lastLogin.setText("Last Login: "+st);
