@@ -84,7 +84,9 @@ public class StocksPage {
             if (data.contains(item)){
                 System.out.println("EXISTS");
             }
-            else if (!data.contains(item)){
+            // if the array list does not contain the item already and does not have a quantity of 0
+            // add item to the list
+            else if ((!data.contains(item) && ((item.getItemQuantity()) != 0))){
                 data.add(item);
             }
         }
@@ -143,15 +145,13 @@ public class StocksPage {
                         double itemCost = Double.parseDouble(itemCostField.getText());
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yy HH:mm");
                         String dateAdded = simpleDateFormat.format(new Date());
-                        System.out.println(itemType + " " + itemName + " " + itemQuan + " " + itemCost + " " + dateAdded);
                         Items items = new Items(itemType,itemName,itemQuan,itemCost,dateAdded);
                         // file io for writing item data in
                         try (Writer fileWriter = new FileWriter("itemsLog.txt", true)){
-                            fileWriter.write(items.toString());
+                            fileWriter.write(items.toString() + "\n");
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        System.out.println(items.toString());
                         data.add(items);
                         tableView.setItems(data);
                         stage.close();
@@ -179,6 +179,11 @@ public class StocksPage {
                 removeItem.setMinSize(250,300);
                 removeItem.setSpacing(8);
                 removeItem.setPadding(new Insets(10,10,10,10));
+                removeItem.setAlignment(Pos.CENTER);
+                Scene scene = new Scene(removeItem);
+                Stage stage = new Stage();
+                stage.setScene(scene);
+                stage.show();
 
                 // Dropdown to show all items in inventory
                 ComboBox itemNameBox = new ComboBox();
@@ -192,14 +197,13 @@ public class StocksPage {
                         // Splits the string read into tokens
                         String delimiter = ",";
                         String[] tokens = readLine.split(delimiter);
-                        String itemType = tokens[0];
                         String itemName = tokens[1];
                         int itemQuan = Integer.parseInt(tokens[2]);
-                        double itemCost = Double.parseDouble(tokens[3]);
-                        String itemDate = tokens[4];
 
                         // adds all item names to dropdown menu
-                        itemNameBox.getItems().addAll(itemName);
+                        if (itemQuan != 0){
+                            itemNameBox.getItems().addAll(itemName);
+                        }
                         // adds item and quantity pair into HashMap
                         itemNameQuan.put(itemName, itemQuan);
                     }
@@ -209,40 +213,112 @@ public class StocksPage {
                     Label quantityLabel = new Label("Quantity");
                     quantityLabel.setFont(Font.font("Arial", FontWeight.BOLD, 15));
                     Label itemQuanLabel = new Label();
+                    Label removeQuantity = new Label("How much to remove?");
+                    removeQuantity.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+                    TextField itemQuanField = new TextField();
 
-
-
-
-
-                    removeItem.getChildren().addAll(dropdownLabel, itemNameBox, quantityLabel, itemQuanLabel);
-                    removeItem.setAlignment(Pos.TOP_CENTER);
-                    removeItem.setSpacing(5);
-
+                    String finalItemName = "";
                     // change listener for dropdown box
                     itemNameBox.valueProperty().addListener(new ChangeListener() {
                         @Override
                         public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-
+                            // searches HashMap for the selected Item and shows the quantity
                             if (itemNameQuan.containsKey(newValue.toString())){
                                 // gets value of key
                                 int quantity = itemNameQuan.get(newValue.toString());
                                 itemQuanLabel.setText(Integer.toString(quantity));
+
+                            }
+                        }
+                    });
+
+                    // confirm button to remove set number of items
+                    Button confirmRemove = new Button("Confirm");
+                    confirmRemove.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent event) {
+                            // gets the removal quantity
+                            int removeQuan = Integer.parseInt(itemQuanField.getText());
+                            // name of item to be removed
+                            String removeItem = itemNameBox.getValue().toString();
+                            File itemsLog = new File("itemsLog.txt");
+                            // holds old file content
+                            String oldContent = "";
+                            String newContent = "";
+                            try {
+                                BufferedReader bufferedReader = new BufferedReader(new FileReader(itemsLog));
+                                String readLine = "", newLine = "";
+                                while ((readLine = bufferedReader.readLine()) != null){
+                                    // appends all of file into oldContent
+                                    oldContent = oldContent + readLine + System.lineSeparator();
+                                    // Splits the string read into tokens
+                                    String delimiter = ",";
+                                    String[] tokens = readLine.split(delimiter);
+                                    String itemType = tokens[0];
+                                    String itemName = tokens[1];
+                                    int oldItemQuan = Integer.parseInt(tokens[2]);
+                                    double itemCost = Double.parseDouble(tokens[3]);
+                                    String itemDate = tokens[4];
+                                    int newItemQuan = oldItemQuan - removeQuan; // after removing set quantity
+
+                                    Items items = new Items(itemType,itemName,newItemQuan,itemCost,itemDate);
+                                    // if line is the selected item
+                                    if (readLine.contains(removeItem)) {
+                                        // readLine is whats needed to be replaced, and newLine is what is replacing it
+                                        newLine = items.toString();
+                                        // replaces readLine with newLine in newContent buffer strings
+                                        newContent = oldContent.replace(readLine, newLine);
+                                        oldContent = "";
+                                    }
+                                }
+                                // appends remaining unchanged lines to newContent
+                                newContent = newContent + oldContent;
+                                // writes everything to itemsLog.txt
+                                BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("itemsLog.txt"));
+                                bufferedWriter.write(newContent);
+                                bufferedWriter.close();
+                                bufferedReader.close();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+                            try {
+                                stage.close();
+                                StocksPage stocksPage = new StocksPage(primaryStage);
+                            } catch (IOException e) {
+                                e.printStackTrace();
                             }
 
 
-                            System.out.println(oldValue);
-                            System.out.println(newValue);
+
                         }
                     });
+
+                    // button to go back
+                    Button backButton = new Button("Back");
+                    HBox hBox = new HBox();
+                    hBox.setAlignment(Pos.CENTER);
+                    hBox.setSpacing(5);
+                    hBox.getChildren().addAll(confirmRemove,backButton);
+
+                    // Goes back to table
+                    backButton.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent event) {
+                            // closes the add item window
+                            stage.close();
+                        }
+                    });
+
+                    // all the components of remove item window
+                    removeItem.getChildren().addAll(dropdownLabel, itemNameBox, quantityLabel, itemQuanLabel,removeQuantity,itemQuanField,hBox);
+                    removeItem.setAlignment(Pos.TOP_CENTER);
+                    removeItem.setSpacing(5);
 
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
 
-                Scene scene = new Scene(removeItem);
-                Stage stage = new Stage();
-                stage.setScene(scene);
-                stage.show();
             }
         });
 

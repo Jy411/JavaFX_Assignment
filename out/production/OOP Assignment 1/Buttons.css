@@ -51,7 +51,7 @@
 #menuButton{
     -fx-background-color: #7f8c8d;
     -fx-pref-height: 40;
-    -fx-pref-width: 80;
+    -fx-pref-width: 100;
     -fx-text-fill: white;
 }
 
