@@ -22,11 +22,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
-public class StocksPage {
+public class UserPurchasePage {
 
     private static ObservableList<Items> data = FXCollections.observableArrayList();
 
-    public StocksPage(Stage primaryStage) throws IOException {
+    public UserPurchasePage(Stage primaryStage) throws IOException {
         // The main borderpane which will hold everything else
         BorderPane borderPane = new BorderPane();
         borderPane.setMinSize(500,500);
@@ -34,12 +34,12 @@ public class StocksPage {
         borderPane.setPadding(new Insets(10,10,10,10));
 
         // Label to show that we are in the stocks page
-        Label stocksLabel = new Label("Inventory Management");
-        stocksLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
-        stocksLabel.setStyle("-fx-border-color: black");
-        stocksLabel.setPadding(new Insets(5,5,5,5));
-        borderPane.setTop(stocksLabel);
-        BorderPane.setAlignment(stocksLabel, Pos.CENTER);
+        Label purchaseLabel = new Label("Purchase");
+        purchaseLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        purchaseLabel.setStyle("-fx-border-color: black");
+        purchaseLabel.setPadding(new Insets(5,5,5,5));
+        borderPane.setTop(purchaseLabel);
+        BorderPane.setAlignment(purchaseLabel, Pos.CENTER);
 
         // Current Inventory Table
         TableView<Items> tableView = new TableView<>();
@@ -89,11 +89,11 @@ public class StocksPage {
         // add items in data to the tableview
         tableView.setItems(data);
 
-        // button at bottom to add stuff
-        Button addButton = new Button("Add Item");
+        // button at bottom to purchase stuff
+        Button purchaseButton = new Button("Purchase");
 
-        // opens window to add items
-        addButton.setOnAction(new EventHandler<ActionEvent>() {
+        // opens window to purchase items
+        purchaseButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 // the add item window
@@ -105,55 +105,100 @@ public class StocksPage {
 
                 Label itemType=new Label("Type");
                 itemType.setFont(Font.font("Arial", FontWeight.BOLD, 15));
-                Label itemName=new Label("Name");
-                itemName.setFont(Font.font("Arial", FontWeight.BOLD, 15));
-                Label itemQuan=new Label("Quantity");
-                itemQuan.setFont(Font.font("Arial", FontWeight.BOLD, 15));
-                Label itemCost=new Label("Cost");
-                itemCost.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+                Label catalogLabel=new Label("Catalog");
+                catalogLabel.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+                // dropdown box showing item categories
                 ComboBox itemTypeBox = new ComboBox();
                 itemTypeBox.getItems().addAll("Beverages", "Bakery", "Canned", "Dairy", "Dry/Baking", "Frozen Foods", "Meat",
                         "Produce", "Cleaning", "Paper Goods", "Personal Care", "Other");
-                TextField itemNameField=new TextField();
-                TextField itemQuanField=new TextField();
-                TextField itemCostField=new TextField();
+                itemTypeBox.setValue("Beverages");
 
+                // LISTVIEW HERE
+                ListView itemCatalog = new ListView();
+
+                // returns the old value and the new selected value
+                String[] newItem = new String[1];
+                itemTypeBox.valueProperty().addListener(new ChangeListener() {
+                    @Override
+                    public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+                        // clears listview so that it refreshes each time a new category is selected
+                        itemCatalog.getItems().clear();
+                        newItem[0] = newValue.toString(); // selected category value
+                        // File reader to read itemsLog.txt line by line and add to Table
+                        File itemsLog = new File("itemsLog.txt");
+                        BufferedReader bufferedReader = null;
+                        try {
+                            bufferedReader = new BufferedReader(new FileReader(itemsLog));
+                            String readLine = "";
+                            System.out.println("Loading data from itemsLog.txt");
+                            // clears the table again so that there are no duplicates
+                            data = FXCollections.observableArrayList();
+                            while ((readLine = bufferedReader.readLine()) != null){
+                                // Splits the string read into tokens
+                                String delimiter = ",";
+                                String[] tokens = readLine.split(delimiter);
+                                String itemType1 = tokens[0];
+                                // when reading through text file, if selected category is same as itemtype in text file
+                                if (itemType1.equals(newItem[0])){
+                                    // then get the item name
+                                    String itemName = tokens[1];
+                                    // if item name is not in the listView
+                                    if (!itemCatalog.getItems().contains(itemName)){
+                                        itemCatalog.getItems().addAll(itemName);
+                                    }
+                                }
+                                int itemQuan = Integer.parseInt(tokens[2]);
+                                double itemCost = Double.parseDouble(tokens[3]);
+                                String itemDate = tokens[4];
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                });
+
+
+
+
+
+                // the two buttons at the bottom
                 HBox hBox = new HBox();
-                Button add=new Button("Add");
+                Button purchase=new Button("Purchase");
                 Button back=new Button("Back");
                 hBox.setAlignment(Pos.CENTER);
                 hBox.setSpacing(5);
-                hBox.getChildren().addAll(add,back);
+                hBox.getChildren().addAll(purchase,back);
 
-                itemsInfo.getChildren().addAll(itemType,itemTypeBox,itemName,itemNameField,itemQuan,itemQuanField,itemCost,itemCostField,hBox);
 
+                itemsInfo.getChildren().addAll(itemType,itemTypeBox,catalogLabel,itemCatalog,hBox);
                 Scene scene=new Scene(itemsInfo);
                 Stage stage=new Stage();
                 stage.setScene(scene);
                 stage.show();
 
-                // add button functionality to add items
-                add.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-                        String itemType = (String) itemTypeBox.getValue();
-                        String itemName = itemNameField.getText();
-                        int itemQuan = Integer.parseInt(itemQuanField.getText());
-                        double itemCost = Double.parseDouble(itemCostField.getText());
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yy HH:mm");
-                        String dateAdded = simpleDateFormat.format(new Date());
-                        Items items = new Items(itemType,itemName,itemQuan,itemCost,dateAdded);
-                        // file io for writing item data in
-                        try (Writer fileWriter = new FileWriter("itemsLog.txt", true)){
-                            fileWriter.write(items.toString() + "\n");
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        data.add(items);
-                        tableView.setItems(data);
-                        stage.close();
-                    }
-                });
+//                // purchase button functionality to purchase items
+//                purchase.setOnAction(new EventHandler<ActionEvent>() {
+//                    @Override
+//                    public void handle(ActionEvent event) {
+//                        String itemType = (String) itemTypeBox.getValue();
+//                        String itemName = itemNameField.getText();
+//                        int itemQuan = Integer.parseInt(itemQuanField.getText());
+//                        double itemCost = Double.parseDouble(itemCostField.getText());
+//                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yy HH:mm");
+//                        String dateAdded = simpleDateFormat.format(new Date());
+//                        Items items = new Items(itemType,itemName,itemQuan,itemCost,dateAdded);
+//                        // file io for writing item data in
+//                        try (Writer fileWriter = new FileWriter("itemsLog.txt", true)){
+//                            fileWriter.write(items.toString() + "\n");
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                        data.add(items);
+//                        tableView.setItems(data);
+//                        stage.close();
+//                    }
+//                });
 
                 // Goes back to table
                 back.setOnAction(new EventHandler<ActionEvent>() {
@@ -281,7 +326,7 @@ public class StocksPage {
 
                             try {
                                 stage.close();
-                                StocksPage stocksPage = new StocksPage(primaryStage);
+                                UserPurchasePage UserPurchasePage = new UserPurchasePage(primaryStage);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -326,7 +371,7 @@ public class StocksPage {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    AdminPage(primaryStage);
+                    UserMainPage(primaryStage);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -335,10 +380,10 @@ public class StocksPage {
 
         HBox hBox = new HBox();
         hBox.setSpacing(10);
-        addButton.setId("menuButton");
+        purchaseButton.setId("menuButton");
         prevButton.setId("menuButton");
         removeButton.setId("menuButton");
-        hBox.getChildren().addAll(addButton,removeButton,prevButton);
+        hBox.getChildren().addAll(purchaseButton,removeButton,prevButton);
         hBox.setAlignment(Pos.CENTER);
         borderPane.setBottom(hBox);
 
@@ -353,7 +398,10 @@ public class StocksPage {
     }
 
     // create an object to link to the admins page
-    public void AdminPage(Stage primaryStage) throws IOException {
-        AdminMainPage adminMainPage = new AdminMainPage(primaryStage);
+    public void UserMainPage(Stage primaryStage) throws IOException {
+        UserMainPage userMainPage = new UserMainPage(primaryStage);
     }
+
+
+
 }

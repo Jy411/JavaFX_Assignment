@@ -11,7 +11,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
@@ -22,9 +21,9 @@ import java.io.FileReader;
 import java.io.IOException;
 
 
-public class AdminMainPage {
+public class UserMainPage {
 
-    public AdminMainPage(Stage primaryStage) throws IOException {
+    public UserMainPage(Stage primaryStage) throws IOException {
         // The main borderpane which will hold everything else
         BorderPane borderPane = new BorderPane();
         borderPane.setMinSize(500,500);
@@ -32,7 +31,7 @@ public class AdminMainPage {
         borderPane.setPadding(new Insets(10,0,0,0));
 
         // TOP shows login status
-        Label loginAs = new Label("You are logged in as: ADMIN");
+        Label loginAs = new Label("You are logged in as: USER");
         loginAs.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD, 20));
         loginAs.setStyle("-fx-border-color: black");
         BorderPane.setAlignment(loginAs, Pos.CENTER);
@@ -41,15 +40,15 @@ public class AdminMainPage {
 
         // CENTER shows menus, the buttons will be placed in a hbox
         HBox hBox = new HBox();
-        // Button 1 : Stock Button
-        Image stockImage = new Image(getClass().getResourceAsStream("images/warehouse.png"));
+        // Button 1 : PURCHASE
+        Image stockImage = new Image(getClass().getResourceAsStream("images/basket.png"));
         ImageView stockImageView = new ImageView(stockImage);
         stockImageView.setPreserveRatio(true);
         stockImageView.setFitHeight(40);
-        Button stocksButton = new Button("Stocks",stockImageView);
-        stocksButton.setFont(Font.font("Arial", FontWeight.LIGHT, 15));
-        stocksButton.setContentDisplay(ContentDisplay.TOP);
-        stocksButton.setId("regularButton");
+        Button purchaseButton = new Button("Purchase",stockImageView);
+        purchaseButton.setFont(Font.font("Arial", FontWeight.LIGHT, 15));
+        purchaseButton.setContentDisplay(ContentDisplay.TOP);
+        purchaseButton.setId("regularButton");
         // Button 2 : Reports Button
         Image reportsImage = new Image(getClass().getResourceAsStream("images/report.png"));
         ImageView reportsImageView = new ImageView(reportsImage);
@@ -71,16 +70,16 @@ public class AdminMainPage {
 
         // adding buttons to hbox in CENTER
         hBox.setAlignment(Pos.CENTER);
-        hBox.getChildren().addAll(stocksButton, reportsButton, discountButton);
+        hBox.getChildren().addAll(purchaseButton, reportsButton, discountButton);
         hBox.setSpacing(10);
         borderPane.setCenter(hBox);
 
         // Button functions
-        stocksButton.setOnAction(new EventHandler<ActionEvent>() {
+        purchaseButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    StocksPage(primaryStage);
+                    UserPurchasePage(primaryStage);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -140,8 +139,8 @@ public class AdminMainPage {
         loginPage.start(primaryStage);
     }
 
-    public void StocksPage(Stage primaryStage) throws IOException{
-        StocksPage stocksPage = new StocksPage(primaryStage);
+    public void UserPurchasePage(Stage primaryStage) throws IOException{
+        UserPurchasePage userPurchasePage = new UserPurchasePage(primaryStage);
     }
 
 }

@@ -1,5 +1,5 @@
-Canned,qwe,0,2.0,15/11/18 13:10
-Frozen Foods,FNESKF,0,3.0,15/11/18 13:11
-Dry/Baking,Kool,1,3.0,15/11/18 13:19
-Frozen Foods,FISH,13,3.0,15/11/18 13:22
-Canned,dkokdo,123,3.0,15/11/18 13:26
+Bakery,Bun,123,2.0,15/11/18 14:10
+Bakery,Toast,123,2.0,15/11/18 14:10
+Bakery,Bread,123,2.0,15/11/18 14:10
+Bakery,Cheesestick,123,2.0,15/11/18 14:10
+Frozen Foods,Beef,21,3.0,15/11/18 14:50

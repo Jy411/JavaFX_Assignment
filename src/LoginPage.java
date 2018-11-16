@@ -98,7 +98,7 @@ public class LoginPage extends Application {
         Date date = new Date();
         SimpleDateFormat simpleDate =
                 new SimpleDateFormat("E, dd/MM/yyyy 'at' hh:mm:ss a");
-        File loginInfo = new File("loginData.txt");
+        File loginInfo = new File("adminLoginData.txt");
         if (loginInfo.createNewFile()){
             System.out.println("File created");
         }
@@ -131,6 +131,32 @@ public class LoginPage extends Application {
             }
         });
 
+        loginUser.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if ((usernameField.getText()).equals("user") && (passwordField.getText()).equals("1234")){
+                    try {
+                        UserPage(primaryStage);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        writer.write(simpleDate.format(date) + "\n");
+                        writer.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Something wrong!");
+                    alert.setHeaderText("Incorrect Username/Password");
+                    alert.setContentText("Please re-enter Username/Password");
+                    alert.showAndWait();
+                }
+            }
+        });
+
         Scene loginScene = new Scene(loginPage);
         loginScene.getStylesheets().add(getClass().getResource("Buttons.css").toExternalForm());
         primaryStage.setScene(loginScene);
@@ -142,4 +168,9 @@ public class LoginPage extends Application {
     public void AdminPage(Stage primaryStage) throws IOException {
         AdminMainPage adminMainPage = new AdminMainPage(primaryStage);
     }
+
+    public void UserPage(Stage primaryStage) throws IOException{
+        UserMainPage userMainPage = new UserMainPage(primaryStage);
+    }
+
 }
