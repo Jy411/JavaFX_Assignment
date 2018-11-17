@@ -5,6 +5,7 @@ public class Items {
     private int itemQuantity;
     private double itemCost;
     private String dateAdded;
+    private int totalSold;
 
     public Items(String itemName, double itemCost) {
         this.itemName = itemName;
@@ -23,6 +24,14 @@ public class Items {
     public String toString() {
         return itemType + "," + itemName + "," + itemQuantity + "," + itemCost
                 + "," + dateAdded;
+    }
+
+    public int getTotalSold() {
+        return totalSold;
+    }
+
+    public void setTotalSold(int totalSold) {
+        this.totalSold = totalSold;
     }
 
     public String getDateAdded() {

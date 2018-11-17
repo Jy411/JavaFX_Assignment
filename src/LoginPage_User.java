@@ -73,16 +73,16 @@ public class LoginPage_User extends Application {
         Button loginUser = new Button("User\nLogin");
         loginUser.setStyle("-fx-text-alignment: center");
         GridPane.setHalignment(loginUser, HPos.LEFT);
-       // Button loginAdmin = new Button("Admin\nLogin");
-       // loginAdmin.setStyle("-fx-text-alignment: center");
+        Button backButton = new Button("Back");
+        backButton.setStyle("-fx-text-alignment: center");
         GridPane.setHalignment(loginUser, HPos.RIGHT);
-        //loginAdmin.setId("loginButton");
+        backButton.setId("loginButton");
         loginUser.setId("loginButton");
 
         // ALL the login stuff in CENTER
         VBox vBox = new VBox();
         HBox hBox = new HBox();
-        hBox.getChildren().addAll(loginUser);
+        hBox.getChildren().addAll(loginUser, backButton);
         hBox.setSpacing(10);
         hBox.setAlignment(Pos.CENTER);
         vBox.getChildren().addAll(loginGreeting,usernameField,passwordField,hBox);
@@ -127,6 +127,17 @@ public class LoginPage_User extends Application {
         	      }
         });
 
+        backButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    LoginSelection(primaryStage);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
         Scene loginScene = new Scene(loginPage);
         loginScene.getStylesheets().add(getClass().getResource("Buttons.css").toExternalForm());
         primaryStage.setScene(loginScene);
@@ -150,6 +161,11 @@ public class LoginPage_User extends Application {
 
     public void UserPage(Stage primaryStage) throws IOException{
         UserMainPage userMainPage = new UserMainPage(primaryStage);
+    }
+
+    public void LoginSelection(Stage primaryStage) throws IOException{
+        LoginSelection loginSelection = new LoginSelection();
+        loginSelection.start(primaryStage);
     }
 
 }
