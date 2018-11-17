@@ -255,10 +255,7 @@ public class UserPurchasePage {
                                 String itemDate = tokens[4];
                                 // Use tokens to create Items object
                                 Items item = new Items(itemType,itemName,itemQuan,itemCost,itemDate);
-
-                                if (itemCart.getItems().contains(item)){
-
-                                }
+                                
 
 
                             }
