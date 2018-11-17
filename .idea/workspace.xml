@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="User Purchase Page has a cart, now need to add function to show total costs of items">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/controlsfx_8.xml" afterDir="false" />
+    <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="Added notification to inform user item has been added to the cart">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OOP Assignment 1.iml" beforeDir="false" afterPath="$PROJECT_DIR$/OOP Assignment 1.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/adminLoginData.txt" beforeDir="false" afterPath="$PROJECT_DIR$/adminLoginData.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OOP Assignment 1/Items.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OOP Assignment 1/Items.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/UserPurchasePage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/UserPurchasePage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/images/basket.svg" beforeDir="false" afterPath="$PROJECT_DIR$/src/images/basket.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userCart.txt" beforeDir="false" afterPath="$PROJECT_DIR$/userCart.txt" afterDir="false" />
     </list>
     <ignored path="JavaFxApplication.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -83,15 +77,15 @@
         <counts>
           <entry key="css" value="799" />
           <entry key="dummy" value="13" />
-          <entry key="java" value="23288" />
-          <entry key="txt" value="599" />
+          <entry key="java" value="23366" />
+          <entry key="txt" value="691" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="CSS" value="801" />
-          <entry key="JAVA" value="23286" />
-          <entry key="PLAIN_TEXT" value="612" />
+          <entry key="JAVA" value="23364" />
+          <entry key="PLAIN_TEXT" value="704" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -100,7 +94,7 @@
           <entry key="fxml" value="1" />
           <entry key="java" value="38" />
           <entry key="png" value="1" />
-          <entry key="txt" value="23" />
+          <entry key="txt" value="24" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
@@ -108,7 +102,7 @@
           <entry key="CSS" value="5" />
           <entry key="Image" value="1" />
           <entry key="JAVA" value="38" />
-          <entry key="PLAIN_TEXT" value="23" />
+          <entry key="PLAIN_TEXT" value="24" />
           <entry key="XML" value="1" />
         </counts>
       </usages-collector>
@@ -143,13 +137,18 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/UserPurchasePage.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="182">
-              <caret line="114" column="46" selection-start-line="114" selection-start-column="46" selection-end-line="114" selection-end-column="46" />
+            <state relative-caret-position="196">
+              <caret line="111" column="64" selection-start-line="111" selection-start-column="64" selection-end-line="111" selection-end-column="64" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/userCart.txt">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -300,7 +299,7 @@
     <property name="OverrideImplement.combined" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1542441574424" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1542441658797" />
     <property name="dynamic.classpath" value="false" />
     <property name="full.screen.before.presentation.mode" value="false" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
@@ -446,7 +445,7 @@
       <workItem from="1540816900805" duration="7652000" />
       <workItem from="1540882180597" duration="1465000" />
       <workItem from="1540912084220" duration="386000" />
-      <workItem from="1542111238155" duration="47645000" />
+      <workItem from="1542111238155" duration="47892000" />
     </task>
     <task id="LOCAL-00001" summary="TableView now retains data added">
       <created>1542179341334</created>
@@ -518,11 +517,18 @@
       <option name="project" value="LOCAL" />
       <updated>1542439955422</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Added notification to inform user item has been added to the cart">
+      <created>1542441608245</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1542441608245</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="90185000" />
+    <option name="totallyTimeSpent" value="90432000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -537,7 +543,7 @@
     <frame x="0" y="23" width="1440" height="877" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.6703755" visible="true" weight="0.2081545" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.6703755" visible="true" weight="0.2081545" />
       <window_info id="Favorites" order="1" weight="0.3297568" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -546,7 +552,7 @@
       <window_info id="Structure" order="6" weight="0.24964234" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.33248407" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.33248407" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3987261" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -625,7 +631,8 @@
     <MESSAGE value="Remove items functionality added, item remains in logfile, but not in table." />
     <MESSAGE value="User Purchase Page almost done, items of specific categories show up in the listview" />
     <MESSAGE value="User Purchase Page has a cart, now need to add function to show total costs of items" />
-    <option name="LAST_COMMIT_MESSAGE" value="User Purchase Page has a cart, now need to add function to show total costs of items" />
+    <MESSAGE value="Added notification to inform user item has been added to the cart" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added notification to inform user item has been added to the cart" />
   </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
@@ -801,17 +808,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/UserMainPage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-71">
-          <caret line="81" column="37" selection-start-line="81" selection-start-column="37" selection-end-line="81" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Items.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="116">
           <caret line="8" column="52" selection-start-line="8" selection-start-column="52" selection-end-line="8" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/UserMainPage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-71">
+          <caret line="81" column="37" selection-start-line="81" selection-start-column="37" selection-end-line="81" selection-end-column="37" />
         </state>
       </provider>
     </entry>
@@ -830,8 +837,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/UserPurchasePage.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="182">
-          <caret line="114" column="46" selection-start-line="114" selection-start-column="46" selection-end-line="114" selection-end-column="46" />
+        <state relative-caret-position="196">
+          <caret line="111" column="64" selection-start-line="111" selection-start-column="64" selection-end-line="111" selection-end-column="64" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
