@@ -6,6 +6,11 @@ public class Items {
     private double itemCost;
     private String dateAdded;
 
+    public Items(String itemName, double itemCost) {
+        this.itemName = itemName;
+        this.itemCost = itemCost;
+    }
+
     public Items(String itemType, String itemName, int itemQuantity, double itemCost, String dateAdded) {
         this.itemType = itemType;
         this.itemName = itemName;

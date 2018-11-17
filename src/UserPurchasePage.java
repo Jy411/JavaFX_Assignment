@@ -76,8 +76,6 @@ public class UserPurchasePage {
                     bufferedReader = new BufferedReader(new FileReader(itemsLog));
                     String readLine = "";
                     System.out.println("Loading data from itemsLog.txt");
-                    // clears the table again so that there are no duplicates
-                    data = FXCollections.observableArrayList();
                     while ((readLine = bufferedReader.readLine()) != null){
                         // Splits the string read into tokens
                         String delimiter = ",";
@@ -105,18 +103,34 @@ public class UserPurchasePage {
 
         // ListView mouse click listener to get new value selected
         // add to cart by double clicking on item
-        final String[] selectedItem = new String[1];
-        ListView itemCart = new ListView();
+        File userCart = new File("userCart.txt");
         itemCatalog.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 if (event.getClickCount() == 2){
-                    selectedItem[0] = itemCatalog.getSelectionModel().getSelectedItem().toString();
-                    itemCart.getItems().addAll(selectedItem[0]);
-                    File userCart = new File("userCart.txt");
+                    // File reader to read itemsLog.txt line by line
+                    File itemsLog = new File("itemsLog.txt");
+                    BufferedReader bufferedReader;
                     try {
                         FileWriter fileWriter = new FileWriter(userCart, true);
-                        fileWriter.write(selectedItem[0] + System.lineSeparator());
+                        bufferedReader = new BufferedReader(new FileReader(itemsLog));
+                        String readLine;
+                        // clears the table again so that there are no duplicates
+                        while ((readLine = bufferedReader.readLine()) != null){
+                            // Splits the string read into tokens
+                            String delimiter = ",";
+                            String[] tokens = readLine.split(delimiter);
+                            String itemType1 = tokens[0];
+                            String itemName = tokens[1];
+                            int itemQuan = Integer.parseInt(tokens[2]);
+                            double itemCost = Double.parseDouble(tokens[3]);
+                            String itemDate = tokens[4];
+                            // if selected item in listview is in the itemLog file
+                            if (itemCatalog.getSelectionModel().getSelectedItem().toString().equals(itemName)){
+                                // write down items in userCart.txt
+                                fileWriter.write(itemName + "," + itemCost + System.lineSeparator());
+                            }
+                        }
                         fileWriter.close();
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -165,16 +179,66 @@ public class UserPurchasePage {
         Button back=new Button("Back");
 
         // opens cart
+        TableView<Items> itemCart = new TableView<>();
+        TableColumn<Items, String> itemNameCol = new TableColumn<>("Name");
+        TableColumn<Items, Double> itemPriceCol = new TableColumn<>("Price (RM)");
+        itemCart.getColumns().addAll(itemNameCol,itemPriceCol);
+        itemNameCol.setCellValueFactory(new PropertyValueFactory<>("itemName"));
+        itemPriceCol.setCellValueFactory(new PropertyValueFactory<>("itemCost"));
+        itemCart.setPadding(new Insets(10,10,10,10));
+        itemCart.setStyle("-fx-focus-color: transparent");
+        itemCart.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        itemCart.setStyle("-fx-background-color: #f0f4f5");
+        data = FXCollections.observableArrayList();
         cart.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 VBox vBox = new VBox();
                 Label cartLabel = new Label("Cart");
                 cartLabel.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+
+                // File reader to read userCart.txt line by line
+                // and add to the tableview
+                File userCart = new File("userCart.txt");
+                BufferedReader bufferedReader;
+                try {
+                    bufferedReader = new BufferedReader(new FileReader(userCart));
+                    String readLine;
+                    // clears the table again so that there are no duplicates
+                    while ((readLine = bufferedReader.readLine()) != null){
+                        // Splits the string read into tokens
+                        String delimiter = ",";
+                        String[] tokens = readLine.split(delimiter);
+                        String itemName = tokens[0];
+                        double itemCost = Double.parseDouble(tokens[1]);
+                        Items items = new Items(itemName, itemCost);
+                        System.out.println(items);
+                        if (data.contains(items)){
+                            System.out.println("EXISTS");
+                        }
+                        // add item and price to the tableview
+                        else if ((!data.contains(items))){
+                            data.add(items);
+                        }
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                itemCart.setItems(data);
+
                 Button back = new Button("Back");
                 back.setId("menuButton");
                 Label totalCostLabel = new Label("Total Cost");
+                totalCostLabel.setFont(Font.font("Arial", FontWeight.BOLD, 15));
                 Label totalCost = new Label();
+
+                double totalItemCost = 0;
+                for (Items i : itemCart.getItems()){
+                    double itemCost = i.getItemCost();
+                    totalItemCost = totalItemCost + itemCost;
+                }
+
+                totalCost.setText(Double.toString(totalItemCost));
                 vBox.setMinSize(300,450);
                 vBox.setAlignment(Pos.CENTER);
                 vBox.getChildren().addAll(cartLabel,itemCart,totalCostLabel,totalCost,back);
@@ -210,6 +274,8 @@ public class UserPurchasePage {
             @Override
             public void handle(ActionEvent event) {
                 try {
+                    PrintWriter printWriter = new PrintWriter("userCart.txt");
+                    printWriter.close();
                     UserMainPage userMainPage = new UserMainPage(primaryStage);
                 } catch (IOException e) {
                     e.printStackTrace();
