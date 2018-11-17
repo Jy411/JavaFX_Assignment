@@ -152,6 +152,5 @@ public class LoginSelection extends Application {
 
     public void RegisterSelection(Stage primaryStage) throws IOException{
         RegisterSelection userPage = new RegisterSelection(primaryStage);
-        userPage.start(primaryStage);
     }
 }

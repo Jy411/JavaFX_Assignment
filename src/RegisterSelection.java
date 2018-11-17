@@ -22,19 +22,9 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class RegisterSelection extends Application {
+public class RegisterSelection {
 
-    public RegisterSelection(Stage primaryStage) {
-    }
-
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-    @Override
-    public void start(Stage primaryStage) throws IOException {
-        // Variable to store the focus on stage load
-        final BooleanProperty firstTime = new SimpleBooleanProperty(true);
+    public RegisterSelection(Stage primaryStage) throws IOException {
 
         // layout
         BorderPane loginPage = new BorderPane();
@@ -62,10 +52,10 @@ public class RegisterSelection extends Application {
 
 
         // Buttons for login
-        Button loginUser = new Button("User\nLogin");
+        Button loginUser = new Button("User\nRegister");
         loginUser.setStyle("-fx-text-alignment: center");
         GridPane.setHalignment(loginUser, HPos.LEFT);
-        Button loginAdmin = new Button("Admin\nLogin");
+        Button loginAdmin = new Button("Admin\nRegister");
         loginAdmin.setStyle("-fx-text-alignment: center");
         GridPane.setHalignment(loginUser, HPos.CENTER);
         Button Register = new Button("Register");
@@ -73,7 +63,6 @@ public class RegisterSelection extends Application {
         GridPane.setHalignment(loginUser, HPos.RIGHT);
         loginAdmin.setId("loginButton");
         loginUser.setId("loginButton");
-        Register.setId("loginButton");
 
         // ALL the login stuff in CENTER
         VBox vBox = new VBox();
@@ -101,7 +90,6 @@ public class RegisterSelection extends Application {
         // admin login function brings to admin page
         loginAdmin.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
-
                 try {
                     Register_Admin(primaryStage);
                 } catch (IOException e) {
@@ -131,6 +119,7 @@ public class RegisterSelection extends Application {
         primaryStage.setTitle("The Grocer Stock Management System");
         primaryStage.show();
     }
+
 
     // create an object to link to the admins page
     public void Register_Admin(Stage primaryStage) throws IOException {
