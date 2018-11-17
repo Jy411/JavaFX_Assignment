@@ -8,6 +8,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -18,7 +19,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 
 import java.io.*;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -41,322 +41,61 @@ public class UserPurchasePage {
         borderPane.setTop(purchaseLabel);
         BorderPane.setAlignment(purchaseLabel, Pos.CENTER);
 
-        // Current Inventory Table
-        TableView<Items> tableView = new TableView<>();
-        TableColumn<Items, String> typeCol=new TableColumn<>("Type");
-        TableColumn<Items, String> nameCol=new TableColumn<>("Name");
-        TableColumn<Items, Integer> quanCol=new TableColumn<>("Quantity");
-        TableColumn<Items, Double> costCol=new TableColumn<>("Price (RM)");
-        TableColumn<Items, Date> dateCol=new TableColumn<>("Date Added");
-        tableView.getColumns().addAll(typeCol,nameCol,quanCol,costCol,dateCol);
-        typeCol.setCellValueFactory(new PropertyValueFactory<>("itemType"));
-        nameCol.setCellValueFactory(new PropertyValueFactory<>("itemName"));
-        quanCol.setCellValueFactory(new PropertyValueFactory<>("itemQuantity"));
-        costCol.setCellValueFactory(new PropertyValueFactory<>("itemCost"));
-        dateCol.setCellValueFactory(new PropertyValueFactory<>("dateAdded"));
-        tableView.setPadding(new Insets(10,10,10,10));
-        tableView.setStyle("-fx-focus-color: transparent");
-        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        tableView.setStyle("-fx-background-color: #f0f4f5");
+        // the add item window
+        VBox itemsInfo = new VBox();
+        itemsInfo.setAlignment(Pos.CENTER);
+        itemsInfo.setMinSize(250,300);
+        itemsInfo.setSpacing(8);
+        itemsInfo.setPadding(new Insets(10,10,10,10));
 
-        // File reader to read itemsLog.txt line by line and add to Table
-        File itemsLog = new File("itemsLog.txt");
-        BufferedReader bufferedReader = new BufferedReader(new FileReader(itemsLog));
-        String readLine = "";
-        System.out.println("Loading data from itemsLog.txt");
-        // clears the table again so that there are no duplicates
-        data = FXCollections.observableArrayList();
-        while ((readLine = bufferedReader.readLine()) != null){
-            // Splits the string read into tokens
-            String delimiter = ",";
-            String[] tokens = readLine.split(delimiter);
-            String itemType = tokens[0];
-            String itemName = tokens[1];
-            int itemQuan = Integer.parseInt(tokens[2]);
-            double itemCost = Double.parseDouble(tokens[3]);
-            String itemDate = tokens[4];
-            // Use tokens to create Items object
-            Items item = new Items(itemType,itemName,itemQuan,itemCost,itemDate);
-            if (data.contains(item)){
-                System.out.println("EXISTS");
-            }
-            // if the array list does not contain the item already and does not have a quantity of 0
-            // add item to the list
-            else if ((!data.contains(item) && ((item.getItemQuantity()) != 0))){
-                data.add(item);
-            }
-        }
-        // add items in data to the tableview
-        tableView.setItems(data);
+        Label itemType=new Label("Type");
+        itemType.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+        Label catalogLabel=new Label("Catalog");
+        catalogLabel.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+        // dropdown box showing item categories
+        ComboBox itemTypeBox = new ComboBox();
+        itemTypeBox.getItems().addAll("Beverages", "Bakery", "Canned", "Dairy", "Dry/Baking", "Frozen Foods", "Meat",
+                "Produce", "Cleaning", "Paper Goods", "Personal Care", "Other");
+        itemTypeBox.setValue("Beverages");
 
-        // button at bottom to purchase stuff
-        Button purchaseButton = new Button("Purchase");
+        // LISTVIEW HERE
+        ListView itemCatalog = new ListView();
 
-        // opens window to purchase items
-        purchaseButton.setOnAction(new EventHandler<ActionEvent>() {
+        // returns the old value and the new selected value
+        String[] newItem = new String[1];
+        itemTypeBox.valueProperty().addListener(new ChangeListener() {
             @Override
-            public void handle(ActionEvent event) {
-                // the add item window
-                VBox itemsInfo = new VBox();
-                itemsInfo.setAlignment(Pos.CENTER);
-                itemsInfo.setMinSize(250,300);
-                itemsInfo.setSpacing(8);
-                itemsInfo.setPadding(new Insets(10,10,10,10));
-
-                Label itemType=new Label("Type");
-                itemType.setFont(Font.font("Arial", FontWeight.BOLD, 15));
-                Label catalogLabel=new Label("Catalog");
-                catalogLabel.setFont(Font.font("Arial", FontWeight.BOLD, 15));
-                // dropdown box showing item categories
-                ComboBox itemTypeBox = new ComboBox();
-                itemTypeBox.getItems().addAll("Beverages", "Bakery", "Canned", "Dairy", "Dry/Baking", "Frozen Foods", "Meat",
-                        "Produce", "Cleaning", "Paper Goods", "Personal Care", "Other");
-                itemTypeBox.setValue("Beverages");
-
-                // LISTVIEW HERE
-                ListView itemCatalog = new ListView();
-
-                // returns the old value and the new selected value
-                String[] newItem = new String[1];
-                itemTypeBox.valueProperty().addListener(new ChangeListener() {
-                    @Override
-                    public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                        // clears listview so that it refreshes each time a new category is selected
-                        itemCatalog.getItems().clear();
-                        newItem[0] = newValue.toString(); // selected category value
-                        // File reader to read itemsLog.txt line by line and add to Table
-                        File itemsLog = new File("itemsLog.txt");
-                        BufferedReader bufferedReader = null;
-                        try {
-                            bufferedReader = new BufferedReader(new FileReader(itemsLog));
-                            String readLine = "";
-                            System.out.println("Loading data from itemsLog.txt");
-                            // clears the table again so that there are no duplicates
-                            data = FXCollections.observableArrayList();
-                            while ((readLine = bufferedReader.readLine()) != null){
-                                // Splits the string read into tokens
-                                String delimiter = ",";
-                                String[] tokens = readLine.split(delimiter);
-                                String itemType1 = tokens[0];
-                                // when reading through text file, if selected category is same as itemtype in text file
-                                if (itemType1.equals(newItem[0])){
-                                    // then get the item name
-                                    String itemName = tokens[1];
-                                    // if item name is not in the listView
-                                    if (!itemCatalog.getItems().contains(itemName)){
-                                        itemCatalog.getItems().addAll(itemName);
-                                    }
-                                }
-                                int itemQuan = Integer.parseInt(tokens[2]);
-                                double itemCost = Double.parseDouble(tokens[3]);
-                                String itemDate = tokens[4];
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                });
-
-
-
-
-
-                // the two buttons at the bottom
-                HBox hBox = new HBox();
-                Button purchase=new Button("Purchase");
-                Button back=new Button("Back");
-                hBox.setAlignment(Pos.CENTER);
-                hBox.setSpacing(5);
-                hBox.getChildren().addAll(purchase,back);
-
-
-                itemsInfo.getChildren().addAll(itemType,itemTypeBox,catalogLabel,itemCatalog,hBox);
-                Scene scene=new Scene(itemsInfo);
-                Stage stage=new Stage();
-                stage.setScene(scene);
-                stage.show();
-
-//                // purchase button functionality to purchase items
-//                purchase.setOnAction(new EventHandler<ActionEvent>() {
-//                    @Override
-//                    public void handle(ActionEvent event) {
-//                        String itemType = (String) itemTypeBox.getValue();
-//                        String itemName = itemNameField.getText();
-//                        int itemQuan = Integer.parseInt(itemQuanField.getText());
-//                        double itemCost = Double.parseDouble(itemCostField.getText());
-//                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yy HH:mm");
-//                        String dateAdded = simpleDateFormat.format(new Date());
-//                        Items items = new Items(itemType,itemName,itemQuan,itemCost,dateAdded);
-//                        // file io for writing item data in
-//                        try (Writer fileWriter = new FileWriter("itemsLog.txt", true)){
-//                            fileWriter.write(items.toString() + "\n");
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-//                        data.add(items);
-//                        tableView.setItems(data);
-//                        stage.close();
-//                    }
-//                });
-
-                // Goes back to table
-                back.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-                        // closes the add item window
-                        stage.close();
-                    }
-                });
-
-            }
-        });
-
-        // button to remove items
-        Button removeButton = new Button("Remove Item");
-        removeButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                VBox removeItem = new VBox();
-                removeItem.setMinSize(250,200);
-                removeItem.setSpacing(8);
-                removeItem.setPadding(new Insets(10,10,10,10));
-                removeItem.setAlignment(Pos.CENTER);
-                Scene scene = new Scene(removeItem);
-                Stage stage = new Stage();
-                stage.setScene(scene);
-                stage.show();
-
-                // Dropdown to show all items in inventory
-                ComboBox itemNameBox = new ComboBox();
+            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+                // clears listview so that it refreshes each time a new category is selected
+                itemCatalog.getItems().clear();
+                newItem[0] = newValue.toString(); // selected category value
+                // File reader to read itemsLog.txt line by line and add to Table
                 File itemsLog = new File("itemsLog.txt");
-                // HashMap to store Item name and its value
-                HashMap<String,Integer> itemNameQuan = new HashMap<>();
+                BufferedReader bufferedReader = null;
                 try {
-                    BufferedReader bufferedReader = new BufferedReader(new FileReader(itemsLog));
+                    bufferedReader = new BufferedReader(new FileReader(itemsLog));
                     String readLine = "";
+                    System.out.println("Loading data from itemsLog.txt");
+                    // clears the table again so that there are no duplicates
+                    data = FXCollections.observableArrayList();
                     while ((readLine = bufferedReader.readLine()) != null){
                         // Splits the string read into tokens
                         String delimiter = ",";
                         String[] tokens = readLine.split(delimiter);
-                        String itemName = tokens[1];
+                        String itemType1 = tokens[0];
+                        // when reading through text file, if selected category is same as itemtype in text file
+                        if (itemType1.equals(newItem[0])){
+                            // then get the item name
+                            String itemName = tokens[1];
+                            // if item name is not in the listView
+                            if (!itemCatalog.getItems().contains(itemName)){
+                                itemCatalog.getItems().addAll(itemName);
+                            }
+                        }
                         int itemQuan = Integer.parseInt(tokens[2]);
-
-                        // adds all item names to dropdown menu
-                        if (itemQuan != 0){
-                            itemNameBox.getItems().addAll(itemName);
-                        }
-                        // adds item and quantity pair into HashMap
-                        itemNameQuan.put(itemName, itemQuan);
+                        double itemCost = Double.parseDouble(tokens[3]);
+                        String itemDate = tokens[4];
                     }
-                    // labels for dropdown and fields
-                    Label dropdownLabel = new Label("Item Name");
-                    dropdownLabel.setFont(Font.font("Arial", FontWeight.BOLD, 15));
-                    Label quantityLabel = new Label("Quantity");
-                    quantityLabel.setFont(Font.font("Arial", FontWeight.BOLD, 15));
-                    Label itemQuanLabel = new Label();
-                    Label removeQuantity = new Label("How much to remove?");
-                    removeQuantity.setFont(Font.font("Arial", FontWeight.BOLD, 15));
-                    TextField itemQuanField = new TextField();
-
-                    String finalItemName = "";
-                    // change listener for dropdown box
-                    itemNameBox.valueProperty().addListener(new ChangeListener() {
-                        @Override
-                        public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                            // searches HashMap for the selected Item and shows the quantity
-                            if (itemNameQuan.containsKey(newValue.toString())){
-                                // gets value of key
-                                int quantity = itemNameQuan.get(newValue.toString());
-                                itemQuanLabel.setText(Integer.toString(quantity));
-
-                            }
-                        }
-                    });
-
-                    // confirm button to remove set number of items
-                    Button confirmRemove = new Button("Confirm");
-                    confirmRemove.setOnAction(new EventHandler<ActionEvent>() {
-                        @Override
-                        public void handle(ActionEvent event) {
-                            // gets the removal quantity
-                            int removeQuan = Integer.parseInt(itemQuanField.getText());
-                            // name of item to be removed
-                            String removeItem = itemNameBox.getValue().toString();
-                            File itemsLog = new File("itemsLog.txt");
-                            // holds old file content
-                            String oldContent = "";
-                            String newContent = "";
-                            try {
-                                BufferedReader bufferedReader = new BufferedReader(new FileReader(itemsLog));
-                                String readLine = "", newLine = "";
-                                while ((readLine = bufferedReader.readLine()) != null){
-                                    // appends all of file into oldContent
-                                    oldContent = oldContent + readLine + System.lineSeparator();
-                                    // Splits the string read into tokens
-                                    String delimiter = ",";
-                                    String[] tokens = readLine.split(delimiter);
-                                    String itemType = tokens[0];
-                                    String itemName = tokens[1];
-                                    int oldItemQuan = Integer.parseInt(tokens[2]);
-                                    double itemCost = Double.parseDouble(tokens[3]);
-                                    String itemDate = tokens[4];
-                                    int newItemQuan = oldItemQuan - removeQuan; // after removing set quantity
-
-                                    Items items = new Items(itemType,itemName,newItemQuan,itemCost,itemDate);
-                                    // if line is the selected item
-                                    if (readLine.contains(removeItem)) {
-                                        // readLine is whats needed to be replaced, and newLine is what is replacing it
-                                        newLine = items.toString();
-                                        // replaces readLine with newLine in newContent buffer strings
-                                        newContent = oldContent.replace(readLine, newLine);
-                                        oldContent = "";
-                                    }
-                                }
-                                // appends remaining unchanged lines to newContent
-                                newContent = newContent + oldContent;
-                                // writes everything to itemsLog.txt
-                                BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("itemsLog.txt"));
-                                bufferedWriter.write(newContent);
-                                bufferedWriter.close();
-                                bufferedReader.close();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-
-                            try {
-                                stage.close();
-                                UserPurchasePage UserPurchasePage = new UserPurchasePage(primaryStage);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-
-
-
-                        }
-                    });
-
-                    // button to go back
-                    Button backButton = new Button("Back");
-                    HBox hBox = new HBox();
-                    hBox.setAlignment(Pos.CENTER);
-                    hBox.setSpacing(5);
-                    hBox.getChildren().addAll(confirmRemove,backButton);
-
-                    // Goes back to table
-                    backButton.setOnAction(new EventHandler<ActionEvent>() {
-                        @Override
-                        public void handle(ActionEvent event) {
-                            // closes the add item window
-                            stage.close();
-                        }
-                    });
-
-                    // all the components of remove item window
-                    removeItem.getChildren().addAll(dropdownLabel, itemNameBox, quantityLabel, itemQuanLabel,removeQuantity,itemQuanField,hBox);
-                    removeItem.setAlignment(Pos.TOP_CENTER);
-                    removeItem.setSpacing(5);
-
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -364,35 +103,133 @@ public class UserPurchasePage {
             }
         });
 
+        // ListView mouse click listener to get new value selected
+        // add to cart by double clicking on item
+        final String[] selectedItem = new String[1];
+        ListView itemCart = new ListView();
+        itemCatalog.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (event.getClickCount() == 2){
+                    selectedItem[0] = itemCatalog.getSelectionModel().getSelectedItem().toString();
+                    itemCart.getItems().addAll(selectedItem[0]);
+                    File userCart = new File("userCart.txt");
+                    try {
+                        FileWriter fileWriter = new FileWriter(userCart, true);
+                        fileWriter.write(selectedItem[0] + System.lineSeparator());
+                        fileWriter.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
 
-        // another button to go back to previous screen
-        Button prevButton = new Button("Back");
-        prevButton.setOnAction(new EventHandler<ActionEvent>() {
+//        // purchase button functionality to purchase items
+//        purchase.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent event) {
+//                // File reader to read itemsLog.txt line by line
+//                File itemsLog = new File("itemsLog.txt");
+//                BufferedReader bufferedReader;
+//                try {
+//                    bufferedReader = new BufferedReader(new FileReader(itemsLog));
+//                    String readLine;
+//                    // clears the table again so that there are no duplicates
+//                    while ((readLine = bufferedReader.readLine()) != null){
+//                        // Splits the string read into tokens
+//                        String delimiter = ",";
+//                        String[] tokens = readLine.split(delimiter);
+//                        String itemType = tokens[0];
+//                        String itemName = tokens[1];
+//                        int itemQuan = Integer.parseInt(tokens[2]);
+//                        double itemCost = Double.parseDouble(tokens[3]);
+//                        String itemDate = tokens[4];
+//                        // Use tokens to create Items object
+//                        Items item = new Items(itemType,itemName,itemQuan,itemCost,itemDate);
+//                        // if selected item in listview is equal to itemname
+//                        if (selectedItem[0].equals(itemName)){
+//                            System.out.println(itemName);
+//                        }
+//
+//                    }
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+
+        // the two buttons at the bottom
+        HBox hBox = new HBox();
+        Button cart=new Button("Cart");
+        Button back=new Button("Back");
+
+        // opens cart
+        cart.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                VBox vBox = new VBox();
+                Label cartLabel = new Label("Cart");
+                cartLabel.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+                Button back = new Button("Back");
+                back.setId("menuButton");
+                Label totalCostLabel = new Label("Total Cost");
+                Label totalCost = new Label();
+                vBox.setMinSize(300,450);
+                vBox.setAlignment(Pos.CENTER);
+                vBox.getChildren().addAll(cartLabel,itemCart,totalCostLabel,totalCost,back);
+                vBox.setPadding(new Insets(10,10,10,10));
+                vBox.setSpacing(5);
+                Scene scene = new Scene(vBox);
+                scene.getStylesheets().add(getClass().getResource("Buttons.css").toExternalForm());
+                Stage stage = new Stage();
+                stage.setScene(scene);
+                stage.setTitle("Cart");
+                stage.show();
+
+                // to go back to purchase screen
+                back.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        try {
+                            stage.close();
+                            UserPurchasePage userPurchasePage = new UserPurchasePage(primaryStage);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+                // total cost calculator
+
+            }
+        });
+
+        // Goes back to User Main Menu
+        back.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    UserMainPage(primaryStage);
+                    UserMainPage userMainPage = new UserMainPage(primaryStage);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
             }
         });
 
-        HBox hBox = new HBox();
-        hBox.setSpacing(10);
-        purchaseButton.setId("menuButton");
-        prevButton.setId("menuButton");
-        removeButton.setId("menuButton");
-        hBox.getChildren().addAll(purchaseButton,removeButton,prevButton);
+        cart.setId("menuButton");
+        back.setId("menuButton");
+        hBox.getChildren().addAll(cart, back);
         hBox.setAlignment(Pos.CENTER);
-        borderPane.setBottom(hBox);
+        hBox.setSpacing(5);
 
-        tableView.refresh();
-        borderPane.setCenter(tableView);
+        itemsInfo.getChildren().addAll(itemType,itemTypeBox,catalogLabel,itemCatalog,hBox);
+        borderPane.setCenter(itemsInfo);
 
-        Scene scene = new Scene(borderPane);
-        scene.getStylesheets().add(getClass().getResource("Buttons.css").toExternalForm());
-        primaryStage.setScene(scene);
+        Scene scene1 = new Scene(borderPane);
+        scene1.getStylesheets().add(getClass().getResource("Buttons.css").toExternalForm());
+        primaryStage.setScene(scene1);
         primaryStage.show();
 
     }

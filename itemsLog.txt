@@ -3,3 +3,6 @@ Bakery,Toast,123,2.0,15/11/18 14:10
 Bakery,Bread,123,2.0,15/11/18 14:10
 Bakery,Cheesestick,123,2.0,15/11/18 14:10
 Frozen Foods,Beef,21,3.0,15/11/18 14:50
+Canned,Tuna,21,3.0,15/11/18 14:50
+Frozen Foods,Chicken,21,3.0,15/11/18 14:50
+Others,Tissue Paper,0,3.0,15/11/18 14:50
