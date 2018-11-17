@@ -24,11 +24,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 
-public class LoginPage extends Application {
+public class LoginPage_User extends Application {
 
-    public LoginPage(Stage primaryStage) throws IOException {
+    public LoginPage_User(Stage primaryStage) throws IOException {
 		// TODO Auto-generated constructor stub
-    	// Variable to store the focus on stage load
+        // Variable to store the focus on stage load
         final BooleanProperty firstTime = new SimpleBooleanProperty(true);
 
         // layout
@@ -70,18 +70,19 @@ public class LoginPage extends Application {
         });
 
         // Buttons for login
-        
-        
-        Button loginAdmin = new Button("Admin\nLogin");
-        loginAdmin.setStyle("-fx-text-alignment: center");
-        
-        loginAdmin.setId("loginButton");
-        
+        Button loginUser = new Button("User\nLogin");
+        loginUser.setStyle("-fx-text-alignment: center");
+        GridPane.setHalignment(loginUser, HPos.LEFT);
+       // Button loginAdmin = new Button("Admin\nLogin");
+       // loginAdmin.setStyle("-fx-text-alignment: center");
+        GridPane.setHalignment(loginUser, HPos.RIGHT);
+        //loginAdmin.setId("loginButton");
+        loginUser.setId("loginButton");
 
         // ALL the login stuff in CENTER
         VBox vBox = new VBox();
         HBox hBox = new HBox();
-        hBox.getChildren().addAll(loginAdmin);
+        hBox.getChildren().addAll(loginUser);
         hBox.setSpacing(10);
         hBox.setAlignment(Pos.CENTER);
         vBox.getChildren().addAll(loginGreeting,usernameField,passwordField,hBox);
@@ -96,50 +97,35 @@ public class LoginPage extends Application {
         SimpleDateFormat simpleDate =
                 new SimpleDateFormat("E, dd/MM/yyyy 'at' hh:mm:ss a");
         File loginInfo = new File("adminLoginData.txt");
-        try {
-			if (loginInfo.createNewFile()){
-			    System.out.println("File created");
-			}
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+        if (loginInfo.createNewFile()){
+            System.out.println("File created");
+        }
         FileWriter writer = new FileWriter(loginInfo, true);
 
-        // admin login function brings to admin page
-        loginAdmin.setOnAction(new EventHandler<ActionEvent>() {
+
+
+        loginUser.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-            	Scanner s;
-				try {
-					s = new Scanner(new File("admin.txt"));
+                
+            	try {
+					Scanner s = new Scanner(new File("user.txt"));
+					
 					while(s.hasNextLine()) {
 						if(usernameField.getText().equals(s.next()) && passwordField.getText().equals(s.next()))
 				    	  {/// write to file here
-							
-							try {
-								writer.write(simpleDate.format(date) + "\n");
-								writer.close();
-								AdminPage(primaryStage);
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-	                        
+							UserPage(primaryStage);
 				    			 
 				    	  }
-	                
-	                
-	            }
-				} catch (FileNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+						
 				
+					}
+				}  catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
+        	      }
         });
-
-        
 
         Scene loginScene = new Scene(loginPage);
         loginScene.getStylesheets().add(getClass().getResource("Buttons.css").toExternalForm());
@@ -154,8 +140,9 @@ public class LoginPage extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        
+
     }
+
     // create an object to link to the admins page
     public void AdminPage(Stage primaryStage) throws IOException {
         AdminMainPage adminMainPage = new AdminMainPage(primaryStage);

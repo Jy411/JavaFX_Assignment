@@ -17,18 +17,20 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Scanner;
 
-public class LoginPage extends Application {
+public class LoginSelection extends Application {
 
-    public LoginPage(Stage primaryStage) throws IOException {
-		// TODO Auto-generated constructor stub
-    	// Variable to store the focus on stage load
+    public static void main(String[] args) {
+        launch(args);
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws IOException {
+        // Variable to store the focus on stage load
         final BooleanProperty firstTime = new SimpleBooleanProperty(true);
 
         // layout
@@ -55,36 +57,24 @@ public class LoginPage extends Application {
         loginGreeting.setFont(Font.font("Arial", FontWeight.BOLD,30));
         GridPane.setHalignment(loginGreeting, HPos.CENTER);
 
-        // TextFields for login
-        TextField usernameField = new TextField();
-        PasswordField passwordField = new PasswordField();
-        usernameField.setPrefColumnCount(8);
-        passwordField.setPrefColumnCount(8);
-        usernameField.setPromptText("Enter username");
-        passwordField.setPromptText("Enter password");
-        usernameField.focusedProperty().addListener((observable,  oldValue,  newValue) -> { // this is to remove focus from textfield when it runs
-            if(newValue && firstTime.get()){
-                loginPage.requestFocus(); // Delegate the focus to container
-                firstTime.setValue(false); // Variable value changed for future references
-            }
-        });
-
+        
         // Buttons for login
-        
-        
+        Button loginUser = new Button("User\nLogin");
+        loginUser.setStyle("-fx-text-alignment: center");
+        GridPane.setHalignment(loginUser, HPos.LEFT);
         Button loginAdmin = new Button("Admin\nLogin");
         loginAdmin.setStyle("-fx-text-alignment: center");
-        
+        GridPane.setHalignment(loginUser, HPos.RIGHT);
         loginAdmin.setId("loginButton");
-        
+        loginUser.setId("loginButton");
 
         // ALL the login stuff in CENTER
         VBox vBox = new VBox();
         HBox hBox = new HBox();
-        hBox.getChildren().addAll(loginAdmin);
+        hBox.getChildren().addAll(loginAdmin,loginUser);
         hBox.setSpacing(10);
         hBox.setAlignment(Pos.CENTER);
-        vBox.getChildren().addAll(loginGreeting,usernameField,passwordField,hBox);
+        vBox.getChildren().addAll(loginGreeting,hBox);
         vBox.setAlignment(Pos.CENTER);
         vBox.setSpacing(10);
         vBox.setMaxWidth(200);
@@ -96,73 +86,52 @@ public class LoginPage extends Application {
         SimpleDateFormat simpleDate =
                 new SimpleDateFormat("E, dd/MM/yyyy 'at' hh:mm:ss a");
         File loginInfo = new File("adminLoginData.txt");
-        try {
-			if (loginInfo.createNewFile()){
-			    System.out.println("File created");
-			}
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+        if (loginInfo.createNewFile()){
+            System.out.println("File created");
+        }
         FileWriter writer = new FileWriter(loginInfo, true);
 
         // admin login function brings to admin page
         loginAdmin.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-            	Scanner s;
-				try {
-					s = new Scanner(new File("admin.txt"));
-					while(s.hasNextLine()) {
-						if(usernameField.getText().equals(s.next()) && passwordField.getText().equals(s.next()))
-				    	  {/// write to file here
-							
-							try {
-								writer.write(simpleDate.format(date) + "\n");
-								writer.close();
-								AdminPage(primaryStage);
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-	                        
-				    			 
-				    	  }
-	                
-	                
-	            }
-				} catch (FileNotFoundException e1) {
+        	 public void handle(ActionEvent event) {
+        		 
+		    	  try {
+					LoginPage(primaryStage);
+				} catch (IOException e) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					e.printStackTrace();
 				}
-				
-				}
+	    			
+		      }
+            
         });
 
-        
+        loginUser.setOnAction(new EventHandler<ActionEvent>() {
+        	public void handle(ActionEvent event) {
+		    	  try {
+					LoginPage_User(primaryStage);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	    			
+		      }
+        });
 
         Scene loginScene = new Scene(loginPage);
         loginScene.getStylesheets().add(getClass().getResource("Buttons.css").toExternalForm());
         primaryStage.setScene(loginScene);
         primaryStage.setTitle("The Grocer Stock Management System");
         primaryStage.show();
-	}
-
-	public static void main(String[] args) {
-        launch(args);
     }
 
-    @Override
-    public void start(Stage primaryStage) throws IOException {
-        
-    }
     // create an object to link to the admins page
-    public void AdminPage(Stage primaryStage) throws IOException {
-        AdminMainPage adminMainPage = new AdminMainPage(primaryStage);
+    public void LoginPage(Stage primaryStage) throws IOException {
+        LoginPage loginPage = new LoginPage(primaryStage);
     }
 
-    public void UserPage(Stage primaryStage) throws IOException{
-        UserMainPage userMainPage = new UserMainPage(primaryStage);
+    public void LoginPage_User(Stage primaryStage) throws IOException{
+        LoginPage_User userPage = new LoginPage_User(primaryStage);
     }
 
 }

@@ -136,9 +136,14 @@ public class AdminMainPage {
 
     // this method calls the Login Page
     public void LoginPage(Stage primaryStage) throws IOException{
-        LoginPage loginPage = new LoginPage();
-        loginPage.start(primaryStage);
+        LoginPage loginPage = new LoginPage(primaryStage);
+        
     }
+    
+    
+    
+    
+    
 
     public void StocksPage(Stage primaryStage) throws IOException{
         StocksPage stocksPage = new StocksPage(primaryStage);
