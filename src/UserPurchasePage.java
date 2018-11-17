@@ -19,10 +19,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 
-
 import java.io.*;
-import java.util.Date;
-import java.util.HashMap;
 
 public class UserPurchasePage {
 
@@ -198,16 +195,27 @@ public class UserPurchasePage {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
                 itemCart.setItems(data);
 
+                // back button
                 Button back = new Button("Back");
                 back.setId("menuButton");
-                Label totalCostLabel = new Label("Total Cost");
+                // cost label
+                Label totalCostLabel = new Label("Total Cost (RM)");
                 totalCostLabel.setFont(Font.font("Arial", FontWeight.BOLD, 15));
                 Label totalCost = new Label();
+                // purchase button
+                Button buyButton = new Button("Purchase");
+                buyButton.setId("menuButton");
+
+                HBox hBox1 = new HBox();
+                hBox1.setAlignment(Pos.CENTER);
+                hBox1.setSpacing(5);
+                hBox1.getChildren().addAll(buyButton, back);
 
                 double totalItemCost = 0;
-                // loops through all the items in the list and adds up their cost
+                // total cost calculator, loops through all the items in the list and adds up their cost
                 for (Items i : itemCart.getItems()){
                     double itemCost = i.getItemCost();
                     totalItemCost = totalItemCost + itemCost;
@@ -216,7 +224,7 @@ public class UserPurchasePage {
                 totalCost.setText(Double.toString(totalItemCost));
                 vBox.setMinSize(300,450);
                 vBox.setAlignment(Pos.CENTER);
-                vBox.getChildren().addAll(cartLabel,itemCart,totalCostLabel,totalCost,back);
+                vBox.getChildren().addAll(cartLabel,itemCart,totalCostLabel,totalCost,hBox1);
                 vBox.setPadding(new Insets(10,10,10,10));
                 vBox.setSpacing(5);
                 Scene scene = new Scene(vBox);
@@ -225,6 +233,40 @@ public class UserPurchasePage {
                 stage.setScene(scene);
                 stage.setTitle("Cart");
                 stage.show();
+
+                // buy button function
+                buyButton.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        // File reader to read itemsLog.txt line by line
+                        File itemsLog = new File("itemsLog.txt");
+                        BufferedReader bufferedReader = null;
+                        try {
+                            bufferedReader = new BufferedReader(new FileReader(itemsLog));
+                            String readLine = "";
+                            while ((readLine = bufferedReader.readLine()) != null){
+                                // Splits the string read into tokens
+                                String delimiter = ",";
+                                String[] tokens = readLine.split(delimiter);
+                                String itemType = tokens[0];
+                                String itemName = tokens[1];
+                                int itemQuan = Integer.parseInt(tokens[2]);
+                                double itemCost = Double.parseDouble(tokens[3]);
+                                String itemDate = tokens[4];
+                                // Use tokens to create Items object
+                                Items item = new Items(itemType,itemName,itemQuan,itemCost,itemDate);
+
+                                if (itemCart.getItems().contains(item)){
+
+                                }
+
+
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
 
                 // to go back to purchase screen
                 back.setOnAction(new EventHandler<ActionEvent>() {
@@ -239,7 +281,6 @@ public class UserPurchasePage {
                     }
                 });
 
-                // total cost calculator
 
             }
         });

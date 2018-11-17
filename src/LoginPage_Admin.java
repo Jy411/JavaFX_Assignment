@@ -27,8 +27,8 @@ import java.util.Scanner;
 public class LoginPage_Admin extends Application {
 
     public LoginPage_Admin(Stage primaryStage) throws IOException {
-		// TODO Auto-generated constructor stub
-    	// Variable to store the focus on stage load
+        // TODO Auto-generated constructor stub
+        // Variable to store the focus on stage load
         final BooleanProperty firstTime = new SimpleBooleanProperty(true);
 
         // layout
@@ -75,7 +75,7 @@ public class LoginPage_Admin extends Application {
         loginAdmin.setStyle("-fx-text-alignment: center");
         backButton.setId("loginButton");
         loginAdmin.setId("loginButton");
-        
+
 
         // ALL the login stuff in CENTER
         VBox vBox = new VBox();
@@ -96,40 +96,39 @@ public class LoginPage_Admin extends Application {
                 new SimpleDateFormat("E, dd/MM/yyyy 'at' hh:mm:ss a");
         File loginInfo = new File("adminLoginData.txt");
         try {
-			if (loginInfo.createNewFile()){
-			    System.out.println("File created");
-			}
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+            if (loginInfo.createNewFile()){
+                System.out.println("File created");
+            }
+        } catch (IOException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
         FileWriter writer = new FileWriter(loginInfo, true);
 
         // admin login function brings to admin page
         loginAdmin.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-            	Scanner s;
-				try {
-					s = new Scanner(new File("admin.txt"));
-					while(s.hasNextLine()) {
-						if(usernameField.getText().equals(s.next()) && passwordField.getText().equals(s.next())) {
-				    	      /// write to file here
-                                try {
-                                    writer.write(simpleDate.format(date) + "\n");
-                                    writer.close();
-                                    AdminPage(primaryStage);
-                                } catch (IOException e) {
-                                    // TODO Auto-generated catch block
-                                    e.printStackTrace();
-                                }
-				    	  }
-	            }
-				} catch (FileNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				}
+                try {
+                    Scanner s = new Scanner(new File("admin.txt"));
+                    while(s.hasNextLine()) {
+                        if(usernameField.getText().equals(s.next()) && passwordField.getText().equals(s.next())) {
+                            try {
+                                // write to file here
+                                writer.write(simpleDate.format(date) + "\n");
+                                writer.close();
+                                AdminPage(primaryStage);
+                            } catch (IOException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                } catch (FileNotFoundException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
+            }
         });
 
         backButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -143,22 +142,22 @@ public class LoginPage_Admin extends Application {
             }
         });
 
-        
+
 
         Scene loginScene = new Scene(loginPage);
         loginScene.getStylesheets().add(getClass().getResource("Buttons.css").toExternalForm());
         primaryStage.setScene(loginScene);
         primaryStage.setTitle("The Grocer Stock Management System");
         primaryStage.show();
-	}
+    }
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
         launch(args);
     }
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        
+
     }
     // create an object to link to the admins page
     public void AdminPage(Stage primaryStage) throws IOException {
