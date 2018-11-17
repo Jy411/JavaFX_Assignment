@@ -70,18 +70,17 @@ public class LoginPage_Admin extends Application {
         });
 
         // Buttons for login
-        
-        
         Button loginAdmin = new Button("Admin\nLogin");
+        Button backButton = new Button("Back");
         loginAdmin.setStyle("-fx-text-alignment: center");
-        
+        backButton.setId("loginButton");
         loginAdmin.setId("loginButton");
         
 
         // ALL the login stuff in CENTER
         VBox vBox = new VBox();
         HBox hBox = new HBox();
-        hBox.getChildren().addAll(loginAdmin);
+        hBox.getChildren().addAll(loginAdmin,backButton);
         hBox.setSpacing(10);
         hBox.setAlignment(Pos.CENTER);
         vBox.getChildren().addAll(loginGreeting,usernameField,passwordField,hBox);
@@ -125,15 +124,23 @@ public class LoginPage_Admin extends Application {
                                     e.printStackTrace();
                                 }
 				    	  }
-	                
-	                
 	            }
 				} catch (FileNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
 				}
+        });
+
+        backButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    LoginSelection(primaryStage);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         });
 
         
@@ -162,4 +169,8 @@ public class LoginPage_Admin extends Application {
         UserMainPage userMainPage = new UserMainPage(primaryStage);
     }
 
+    public void LoginSelection(Stage primaryStage) throws IOException{
+        LoginSelection loginSelection = new LoginSelection();
+        loginSelection.start(primaryStage);
+    }
 }
