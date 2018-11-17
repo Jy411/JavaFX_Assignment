@@ -16,6 +16,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.Duration;
+import org.controlsfx.control.Notifications;
 
 
 import java.io.*;
@@ -69,13 +71,12 @@ public class UserPurchasePage {
                 // clears listview so that it refreshes each time a new category is selected
                 itemCatalog.getItems().clear();
                 newItem[0] = newValue.toString(); // selected category value
-                // File reader to read itemsLog.txt line by line and add to Table
+                // File reader to read itemsLog.txt line by line
                 File itemsLog = new File("itemsLog.txt");
                 BufferedReader bufferedReader = null;
                 try {
                     bufferedReader = new BufferedReader(new FileReader(itemsLog));
                     String readLine = "";
-                    System.out.println("Loading data from itemsLog.txt");
                     while ((readLine = bufferedReader.readLine()) != null){
                         // Splits the string read into tokens
                         String delimiter = ",";
@@ -108,6 +109,13 @@ public class UserPurchasePage {
             @Override
             public void handle(MouseEvent event) {
                 if (event.getClickCount() == 2){
+                    // creates pop up notification at the corner
+                    Notifications.create()
+                    .title("Success!")
+                    .text("Item Successfully Added to Cart.")
+                    .hideAfter(new Duration(1000))
+                    .showInformation();
+
                     // File reader to read itemsLog.txt line by line
                     File itemsLog = new File("itemsLog.txt");
                     BufferedReader bufferedReader;
@@ -138,40 +146,6 @@ public class UserPurchasePage {
                 }
             }
         });
-
-//        // purchase button functionality to purchase items
-//        purchase.setOnAction(new EventHandler<ActionEvent>() {
-//            @Override
-//            public void handle(ActionEvent event) {
-//                // File reader to read itemsLog.txt line by line
-//                File itemsLog = new File("itemsLog.txt");
-//                BufferedReader bufferedReader;
-//                try {
-//                    bufferedReader = new BufferedReader(new FileReader(itemsLog));
-//                    String readLine;
-//                    // clears the table again so that there are no duplicates
-//                    while ((readLine = bufferedReader.readLine()) != null){
-//                        // Splits the string read into tokens
-//                        String delimiter = ",";
-//                        String[] tokens = readLine.split(delimiter);
-//                        String itemType = tokens[0];
-//                        String itemName = tokens[1];
-//                        int itemQuan = Integer.parseInt(tokens[2]);
-//                        double itemCost = Double.parseDouble(tokens[3]);
-//                        String itemDate = tokens[4];
-//                        // Use tokens to create Items object
-//                        Items item = new Items(itemType,itemName,itemQuan,itemCost,itemDate);
-//                        // if selected item in listview is equal to itemname
-//                        if (selectedItem[0].equals(itemName)){
-//                            System.out.println(itemName);
-//                        }
-//
-//                    }
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
 
         // the two buttons at the bottom
         HBox hBox = new HBox();

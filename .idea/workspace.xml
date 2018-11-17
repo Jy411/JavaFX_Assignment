@@ -2,10 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="User Purchase Page has a cart, now need to add function to show total costs of items">
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/controlsfx_8.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Items.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Items.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OOP Assignment 1.iml" beforeDir="false" afterPath="$PROJECT_DIR$/OOP Assignment 1.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/adminLoginData.txt" beforeDir="false" afterPath="$PROJECT_DIR$/adminLoginData.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OOP Assignment 1/Items.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OOP Assignment 1/Items.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/UserPurchasePage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/UserPurchasePage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/images/basket.svg" beforeDir="false" afterPath="$PROJECT_DIR$/src/images/basket.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/userCart.txt" beforeDir="false" afterPath="$PROJECT_DIR$/userCart.txt" afterDir="false" />
     </list>
     <ignored path="JavaFxApplication.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -79,14 +83,14 @@
         <counts>
           <entry key="css" value="799" />
           <entry key="dummy" value="13" />
-          <entry key="java" value="23130" />
+          <entry key="java" value="23288" />
           <entry key="txt" value="599" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="CSS" value="801" />
-          <entry key="JAVA" value="23128" />
+          <entry key="JAVA" value="23286" />
           <entry key="PLAIN_TEXT" value="612" />
         </counts>
       </usages-collector>
@@ -128,7 +132,7 @@
         <entry file="file://$PROJECT_DIR$/src/StocksPage.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="107">
-              <caret line="68" column="63" lean-forward="true" selection-start-line="68" selection-start-column="63" selection-end-line="68" selection-end-column="63" />
+              <caret line="68" column="63" selection-start-line="68" selection-start-column="63" selection-end-line="68" selection-end-column="63" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -139,21 +143,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/UserPurchasePage.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="250">
-              <caret line="232" column="46" lean-forward="true" selection-start-line="232" selection-start-column="46" selection-end-line="232" selection-end-column="46" />
+            <state relative-caret-position="182">
+              <caret line="114" column="46" selection-start-line="114" selection-start-column="46" selection-end-line="114" selection-end-column="46" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#5246#5306#0" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/userCart.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
-              <caret line="1" column="9" lean-forward="true" selection-start-line="1" selection-start-column="9" selection-end-line="1" selection-end-column="9" />
             </state>
           </provider>
         </entry>
@@ -199,6 +193,7 @@
       <find>scene</find>
       <find>Purchase</find>
       <find>itemCart</find>
+      <find>Loading</find>
     </findStrings>
     <replaceStrings>
       <replace>userPurchasePage</replace>
@@ -305,15 +300,15 @@
     <property name="OverrideImplement.combined" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1542439923947" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1542441574424" />
     <property name="dynamic.classpath" value="false" />
     <property name="full.screen.before.presentation.mode" value="false" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="project.structure.last.edited" value="Libraries" />
-    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="recentsLimit" value="5" />
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Language Defaults" />
+    <property name="settings.editor.selected.configurable" value="settings.github" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -451,7 +446,7 @@
       <workItem from="1540816900805" duration="7652000" />
       <workItem from="1540882180597" duration="1465000" />
       <workItem from="1540912084220" duration="386000" />
-      <workItem from="1542111238155" duration="46481000" />
+      <workItem from="1542111238155" duration="47645000" />
     </task>
     <task id="LOCAL-00001" summary="TableView now retains data added">
       <created>1542179341334</created>
@@ -516,11 +511,18 @@
       <option name="project" value="LOCAL" />
       <updated>1542436464235</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="User Purchase Page has a cart, now need to add function to show total costs of items">
+      <created>1542439955422</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1542439955422</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="89021000" />
+    <option name="totallyTimeSpent" value="90185000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -816,7 +818,7 @@
     <entry file="file://$PROJECT_DIR$/src/StocksPage.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="107">
-          <caret line="68" column="63" lean-forward="true" selection-start-line="68" selection-start-column="63" selection-end-line="68" selection-end-column="63" />
+          <caret line="68" column="63" selection-start-line="68" selection-start-column="63" selection-end-line="68" selection-end-column="63" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -824,19 +826,14 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/userCart.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="1" column="9" lean-forward="true" selection-start-line="1" selection-start-column="9" selection-end-line="1" selection-end-column="9" />
-        </state>
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/UserPurchasePage.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="250">
-          <caret line="232" column="46" lean-forward="true" selection-start-line="232" selection-start-column="46" selection-end-line="232" selection-end-column="46" />
+        <state relative-caret-position="182">
+          <caret line="114" column="46" selection-start-line="114" selection-start-column="46" selection-end-line="114" selection-end-column="46" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#5246#5306#0" />
           </folding>
         </state>
       </provider>
@@ -908,6 +905,7 @@
       </state>
       <state key="ProjectLibrariesConfigurable.UI">
         <settings>
+          <last-edited>controlsfx-8</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
