@@ -27,7 +27,7 @@ import java.util.Scanner;
 public class LoginPage_User extends Application {
 
     public LoginPage_User(Stage primaryStage) throws IOException {
-		// TODO Auto-generated constructor stub
+        // TODO Auto-generated constructor stub
         // Variable to store the focus on stage load
         final BooleanProperty firstTime = new SimpleBooleanProperty(true);
 
@@ -100,31 +100,23 @@ public class LoginPage_User extends Application {
         if (loginInfo.createNewFile()){
             System.out.println("File created");
         }
+
         FileWriter writer = new FileWriter(loginInfo, true);
-
-
-
+        // login button function
         loginUser.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                
-            	try {
-					Scanner s = new Scanner(new File("user.txt"));
-					
-					while(s.hasNextLine()) {
-						if(usernameField.getText().equals(s.next()) && passwordField.getText().equals(s.next()))
-				    	  {/// write to file here
-							UserPage(primaryStage);
-				    			 
-				    	  }
-						
-				
-					}
-				}  catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-        	      }
+                try {
+                    Scanner s = new Scanner(new File("user.txt"));
+                    while(s.hasNextLine()) {
+                        if(usernameField.getText().equals(s.next()) && passwordField.getText().equals(s.next())) {
+                            /// write to file here
+                            UserPage(primaryStage); }
+                    }
+                }  catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace(); }
+            }
         });
 
         backButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -143,9 +135,9 @@ public class LoginPage_User extends Application {
         primaryStage.setScene(loginScene);
         primaryStage.setTitle("The Grocer Stock Management System");
         primaryStage.show();
-	}
+    }
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
         launch(args);
     }
 
