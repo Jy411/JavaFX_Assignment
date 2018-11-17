@@ -19,8 +19,7 @@ import javafx.stage.Window;
 
 public class Register_User extends Application {
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
+    public Register_User(Stage primaryStage) {
         primaryStage.setTitle("Registration Form JavaFX Application");
 
         // Create the registration form grid pane
@@ -144,6 +143,11 @@ public class Register_User extends Application {
         primaryStage.setScene(scene);
 
         primaryStage.show();
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+
     }
 
 
