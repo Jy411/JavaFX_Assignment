@@ -11,7 +11,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
@@ -136,7 +135,7 @@ public class AdminMainPage {
 
     // this method calls the Login Page
     public void LoginPage(Stage primaryStage) throws IOException{
-        LoginPage loginPage = new LoginPage(primaryStage);
+        LoginPage_Admin loginPageAdmin = new LoginPage_Admin(primaryStage);
         
     }
     

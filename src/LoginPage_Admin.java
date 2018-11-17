@@ -24,9 +24,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 
-public class LoginPage extends Application {
+public class LoginPage_Admin extends Application {
 
-    public LoginPage(Stage primaryStage) throws IOException {
+    public LoginPage_Admin(Stage primaryStage) throws IOException {
 		// TODO Auto-generated constructor stub
     	// Variable to store the focus on stage load
         final BooleanProperty firstTime = new SimpleBooleanProperty(true);
@@ -114,19 +114,16 @@ public class LoginPage extends Application {
 				try {
 					s = new Scanner(new File("admin.txt"));
 					while(s.hasNextLine()) {
-						if(usernameField.getText().equals(s.next()) && passwordField.getText().equals(s.next()))
-				    	  {/// write to file here
-							
-							try {
-								writer.write(simpleDate.format(date) + "\n");
-								writer.close();
-								AdminPage(primaryStage);
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-	                        
-				    			 
+						if(usernameField.getText().equals(s.next()) && passwordField.getText().equals(s.next())) {
+				    	      /// write to file here
+                                try {
+                                    writer.write(simpleDate.format(date) + "\n");
+                                    writer.close();
+                                    AdminPage(primaryStage);
+                                } catch (IOException e) {
+                                    // TODO Auto-generated catch block
+                                    e.printStackTrace();
+                                }
 				    	  }
 	                
 	                

@@ -135,7 +135,7 @@ public class UserMainPage {
 
     // this method calls the Login Page
     public void LoginPage(Stage primaryStage) throws IOException{
-        LoginPage loginPage = new LoginPage(primaryStage);
+        LoginPage_Admin loginPageAdmin = new LoginPage_Admin(primaryStage);
         
     }
 

@@ -127,7 +127,7 @@ public class LoginSelection extends Application {
 
     // create an object to link to the admins page
     public void LoginPage(Stage primaryStage) throws IOException {
-        LoginPage loginPage = new LoginPage(primaryStage);
+        LoginPage_Admin loginPageAdmin = new LoginPage_Admin(primaryStage);
     }
 
     public void LoginPage_User(Stage primaryStage) throws IOException{

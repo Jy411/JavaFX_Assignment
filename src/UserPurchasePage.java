@@ -207,6 +207,7 @@ public class UserPurchasePage {
                 Label totalCost = new Label();
 
                 double totalItemCost = 0;
+                // loops through all the items in the list and adds up their cost
                 for (Items i : itemCart.getItems()){
                     double itemCost = i.getItemCost();
                     totalItemCost = totalItemCost + itemCost;
