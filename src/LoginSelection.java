@@ -96,7 +96,7 @@ public class LoginSelection extends Application {
         	 public void handle(ActionEvent event) {
         		 
 		    	  try {
-					LoginPage(primaryStage);
+					LoginPage_Admin(primaryStage);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -126,7 +126,7 @@ public class LoginSelection extends Application {
     }
 
     // create an object to link to the admins page
-    public void LoginPage(Stage primaryStage) throws IOException {
+    public void LoginPage_Admin(Stage primaryStage) throws IOException {
         LoginPage_Admin loginPageAdmin = new LoginPage_Admin(primaryStage);
     }
 
