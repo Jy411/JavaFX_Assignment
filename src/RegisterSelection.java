@@ -46,7 +46,7 @@ public class RegisterSelection {
         loginPage.setTop(grocerInfo);
 
         // Labels for login
-        Label loginGreeting = new Label("Login");
+        Label loginGreeting = new Label("Select Registration Type");
         loginGreeting.setFont(Font.font("Arial", FontWeight.BOLD,30));
         GridPane.setHalignment(loginGreeting, HPos.CENTER);
 
@@ -58,11 +58,12 @@ public class RegisterSelection {
         Button loginAdmin = new Button("Admin\nRegister");
         loginAdmin.setStyle("-fx-text-alignment: center");
         GridPane.setHalignment(loginUser, HPos.CENTER);
-        Button Register = new Button("Register");
+        Button Register = new Button("Back");
         Register.setStyle("-fx-text-alignment: center");
         GridPane.setHalignment(loginUser, HPos.RIGHT);
         loginAdmin.setId("loginButton");
         loginUser.setId("loginButton");
+        Register.setId("loginButton");
 
         // ALL the login stuff in CENTER
         VBox vBox = new VBox();
@@ -113,6 +114,20 @@ public class RegisterSelection {
             }
         });
 
+        Register.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                try {
+                    LoginSelection(primaryStage);
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
+
+
         Scene loginScene = new Scene(loginPage);
         loginScene.getStylesheets().add(getClass().getResource("Buttons.css").toExternalForm());
         primaryStage.setScene(loginScene);
@@ -128,6 +143,11 @@ public class RegisterSelection {
 
     public void Register_User(Stage primaryStage) throws IOException {
         Register_User loginPageAdmin = new Register_User(primaryStage);
+    }
+    public void LoginSelection(Stage primaryStage) throws IOException{
+
+        LoginSelection selection =new LoginSelection();
+        selection.start(primaryStage);
     }
 
 }
