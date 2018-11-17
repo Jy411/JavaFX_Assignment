@@ -22,7 +22,10 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class LoginSelection extends Application {
+public class RegisterSelection extends Application {
+
+    public RegisterSelection(Stage primaryStage) {
+    }
 
     public static void main(String[] args) {
         launch(args);
@@ -57,7 +60,7 @@ public class LoginSelection extends Application {
         loginGreeting.setFont(Font.font("Arial", FontWeight.BOLD,30));
         GridPane.setHalignment(loginGreeting, HPos.CENTER);
 
-        
+
         // Buttons for login
         Button loginUser = new Button("User\nLogin");
         loginUser.setStyle("-fx-text-alignment: center");
@@ -97,35 +100,23 @@ public class LoginSelection extends Application {
 
         // admin login function brings to admin page
         loginAdmin.setOnAction(new EventHandler<ActionEvent>() {
-        	 public void handle(ActionEvent event) {
-        		 
-		    	  try {
-					LoginPage_Admin(primaryStage);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-	    			
-		      }
-            
+            public void handle(ActionEvent event) {
+
+                try {
+                    Register_Admin(primaryStage);
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
+            }
+
         });
 
         loginUser.setOnAction(new EventHandler<ActionEvent>() {
-        	public void handle(ActionEvent event) {
-		    	  try {
-					LoginPage_User(primaryStage);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-	    			
-		      }
-        });
-
-        Register.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 try {
-                    RegisterSelection(primaryStage);
+                    Register_User(primaryStage);
                 } catch (IOException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
@@ -142,16 +133,12 @@ public class LoginSelection extends Application {
     }
 
     // create an object to link to the admins page
-    public void LoginPage_Admin(Stage primaryStage) throws IOException {
-        LoginPage_Admin loginPageAdmin = new LoginPage_Admin(primaryStage);
+    public void Register_Admin(Stage primaryStage) throws IOException {
+        Register_Admin loginPageAdmin = new Register_Admin(primaryStage);
     }
 
-    public void LoginPage_User(Stage primaryStage) throws IOException{
-        LoginPage_User userPage = new LoginPage_User(primaryStage);
+    public void Register_User(Stage primaryStage) throws IOException {
+        Register_User loginPageAdmin = new Register_User(primaryStage);
     }
 
-    public void RegisterSelection(Stage primaryStage) throws IOException{
-        RegisterSelection userPage = new RegisterSelection(primaryStage);
-        userPage.start(primaryStage);
-    }
 }

@@ -19,8 +19,7 @@ import javafx.stage.Window;
 
 public class Register_Admin extends Application {
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
+    public Register_Admin(Stage primaryStage) {
         primaryStage.setTitle("Registration Form JavaFX Application");
 
         // Create the registration form grid pane
@@ -177,6 +176,11 @@ public class Register_Admin extends Application {
         gridPane.getColumnConstraints().addAll(columnOneConstraints, columnTwoConstrains);
 
         return gridPane;
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+
     }
 
     private void addUIControls(GridPane gridPane) {
