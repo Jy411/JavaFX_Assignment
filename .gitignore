@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-
 \.idea/
-=======
-/.idea
-/controlsfx-8
->>>>>>> master
+\.controlsfx-8
+\out
