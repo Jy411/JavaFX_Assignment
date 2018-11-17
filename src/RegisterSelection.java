@@ -135,6 +135,10 @@ public class RegisterSelection {
         primaryStage.show();
     }
 
+    public RegisterSelection() {
+
+    }
+
 
     // create an object to link to the admins page
     public void Register_Admin(Stage primaryStage) throws IOException {
@@ -150,4 +154,6 @@ public class RegisterSelection {
         selection.start(primaryStage);
     }
 
+    public void start(Stage primaryStage) {
+    }
 }

@@ -131,7 +131,7 @@ public class Register_User extends Application {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    LoginSelection(primaryStage);
+                    RegisterSelection(primaryStage);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -192,9 +192,9 @@ public class Register_User extends Application {
         alert.initOwner(owner);
         alert.show();
     }
-    public void LoginSelection(Stage primaryStage) throws IOException{
-        LoginSelection loginSelection = new LoginSelection();
-        loginSelection.start(primaryStage);
+    public void RegisterSelection(Stage primaryStage) throws IOException{
+      RegisterSelection registerselect =new RegisterSelection();
+      registerselect.start(primaryStage);
     }
     public static void main(String[] args) {
         launch(args);
