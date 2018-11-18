@@ -112,7 +112,7 @@ public class UserMainPage {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    LoginPage(primaryStage);
+                    LoginSelection(primaryStage);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -136,7 +136,11 @@ public class UserMainPage {
     // this method calls the Login Page
     public void LoginPage(Stage primaryStage) throws IOException{
         LoginPage_Admin loginPageAdmin = new LoginPage_Admin(primaryStage);
-        
+    }
+
+    public void LoginSelection(Stage primaryStage) throws IOException{
+        LoginSelection loginSelection = new LoginSelection();
+        loginSelection.start(primaryStage);
     }
 
     public void UserPurchasePage(Stage primaryStage) throws IOException{
