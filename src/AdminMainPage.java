@@ -111,12 +111,27 @@ public class AdminMainPage {
             }
         }
 
+        //Change Password
+        Button changePassword = new Button("Change Password");
+        changePassword.setId("logoutButton");
+
         // BOTTOM will have admin profile info and logout
         Button logoutButton = new Button("Logout");
         logoutButton.setId("logoutButton");
         VBox vBox = new VBox();
-        vBox.getChildren().addAll(lastLogin,logoutButton);
+        vBox.getChildren().addAll(lastLogin,logoutButton,changePassword);
 
+        // change password button function
+        changePassword.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    PasswordChange_Selection(primaryStage);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         // logout button functionality
         logoutButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -155,6 +170,11 @@ public class AdminMainPage {
     public void AdminPage_Discount(Stage primaryStage) throws IOException{
         AdminPage_Discount adminPage_Discount = new AdminPage_Discount(primaryStage);
     }
+    public void PasswordChange_Selection(Stage primaryStage)throws IOException{
+        PasswordChange_Selection passChange =new PasswordChange_Selection(primaryStage);
+
+    }
+
 
 
 }

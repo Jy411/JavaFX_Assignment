@@ -117,7 +117,7 @@ public class PasswordChange_Selection {
         Register.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 try {
-                    LoginSelection(primaryStage);
+                    AdminMainPage(primaryStage);
                 } catch (IOException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
@@ -165,5 +165,10 @@ public class PasswordChange_Selection {
     }
 
     public void start(Stage primaryStage) {
+    }
+    public void AdminMainPage(Stage primaryStage)throws IOException{
+        AdminMainPage adminpage=new AdminMainPage(primaryStage);
+
+
     }
 }

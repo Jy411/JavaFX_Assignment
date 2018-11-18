@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -8,6 +9,7 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -15,6 +17,10 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 public class ChangePassword_Admin extends Application{
@@ -27,35 +33,45 @@ public class ChangePassword_Admin extends Application{
         // TODO Auto-generated method stub
 
         Label lblusername = new Label("Username ");
+        lblusername.setFont(Font.font("Arial", FontWeight.BOLD, 15));
         TextField tfusername = new TextField();
         Label lblpassword = new Label("Password" );
+        lblpassword.setFont(Font.font("Arial", FontWeight.BOLD, 15));
         PasswordField pfold = new PasswordField();
         Label lblnewpass = new Label("New Password" );
+        lblnewpass.setFont(Font.font("Arial", FontWeight.BOLD, 15));
         PasswordField pfnew = new PasswordField();
         Label lblconfirmpass = new Label("Confirm New Password" );
+        lblconfirmpass.setFont(Font.font("Arial", FontWeight.BOLD, 15));
         PasswordField pfconfirmnew = new PasswordField();
         Label lblmessage = new Label();
+        lblmessage.setFont(Font.font("Arial", FontWeight.BOLD, 15));
 
         Button btnsubmit = new Button("Submit");
-        Button btnBack = new Button("Reset");
+        Button btnBack = new Button("Back");
+        btnBack.setId("loginButton");
+        btnsubmit.setId("loginButton");
 
-        GridPane grid = new GridPane();
-        grid.setPadding(new Insets(20, 20, 20, 20));
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.add(lblusername, 0, 0);
-        grid.add(tfusername, 1, 0);
-        grid.add(lblpassword, 0, 1);
-        grid.add(pfold, 1, 1);
-        grid.add(lblnewpass, 0, 2);
-        grid.add(pfnew, 1, 2);
-        grid.add(lblconfirmpass, 0, 3);
-        grid.add(pfconfirmnew, 1, 3);
-        grid.add(btnsubmit, 0, 4);
-        grid.add(btnBack, 1, 4);
+        VBox Info = new VBox();
+        Info.setAlignment(Pos.CENTER);
+        Info.setMinSize(250,300);
+        Info.setSpacing(8);
+        Info.setPadding(new Insets(10,10,10,10));
+
+
+
+        HBox hBox = new HBox();
+        hBox.setAlignment(Pos.CENTER);
+        hBox.setSpacing(5);
+        hBox.getChildren().addAll(btnsubmit,btnBack);
+
+        Info.getChildren().addAll(lblusername,tfusername,lblpassword,pfold,lblnewpass,pfnew,lblconfirmpass,pfconfirmnew,hBox);
+
+
+
 
         BorderPane bpane = new BorderPane();
-        bpane.setCenter(grid);
+        bpane.setCenter(Info);
         bpane.setRight(lblmessage);
 
         btnsubmit.setOnAction(new EventHandler<ActionEvent>() {
@@ -108,11 +124,13 @@ public class ChangePassword_Admin extends Application{
         });
 
         btnBack.setOnAction(new EventHandler<ActionEvent>() {
-
             @Override
             public void handle(ActionEvent event) {
-
-
+                try {
+                    PasswordChange_Selection(stage);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -120,6 +138,10 @@ public class ChangePassword_Admin extends Application{
 
         stage.setScene(scene1);
         stage.show();
+    }
+    public void PasswordChange_Selection(Stage primaryStage)throws IOException {
+        PasswordChange_Selection passChange =new PasswordChange_Selection(primaryStage);
+
     }
 
 }
