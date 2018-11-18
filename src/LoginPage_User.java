@@ -51,7 +51,7 @@ public class LoginPage_User extends Application {
         loginPage.setTop(grocerInfo);
 
         // Labels for login
-        Label loginGreeting = new Label("Login User");
+        Label loginGreeting = new Label("User Login");
         loginGreeting.setFont(Font.font("Arial", FontWeight.BOLD,30));
         GridPane.setHalignment(loginGreeting, HPos.CENTER);
 

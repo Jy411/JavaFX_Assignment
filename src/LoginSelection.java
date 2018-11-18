@@ -64,10 +64,10 @@ public class LoginSelection extends Application {
         GridPane.setHalignment(loginUser, HPos.LEFT);
         Button loginAdmin = new Button("Admin\nLogin");
         loginAdmin.setStyle("-fx-text-alignment: center");
-        GridPane.setHalignment(loginUser, HPos.CENTER);
+        GridPane.setHalignment(loginAdmin, HPos.CENTER);
         Button Register = new Button("Register");
         Register.setStyle("-fx-text-alignment: center");
-        GridPane.setHalignment(loginUser, HPos.RIGHT);
+        GridPane.setHalignment(Register, HPos.RIGHT);
         loginAdmin.setId("loginButton");
         loginUser.setId("loginButton");
         Register.setId("loginButton");

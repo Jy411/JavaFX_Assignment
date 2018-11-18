@@ -46,7 +46,7 @@ public class RegisterSelection {
         loginPage.setTop(grocerInfo);
 
         // Labels for login
-        Label loginGreeting = new Label("Select Registration Type");
+        Label loginGreeting = new Label("Register");
         loginGreeting.setFont(Font.font("Arial", FontWeight.BOLD,30));
         GridPane.setHalignment(loginGreeting, HPos.CENTER);
 

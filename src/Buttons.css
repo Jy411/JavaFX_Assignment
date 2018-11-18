@@ -32,7 +32,7 @@
 
 #loginButton{
     -fx-background-color: #7f8c8d;
-    -fx-pref-width: 52;
+    -fx-min-width: 80;
     -fx-pref-height: 60;
     -fx-font-family: Arial;
     -fx-font-weight: 500;

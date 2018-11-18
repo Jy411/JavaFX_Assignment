@@ -297,6 +297,7 @@ public class UserPurchasePage {
             }
         });
 
+
         cart.setId("menuButton");
         back.setId("menuButton");
         hBox.getChildren().addAll(cart, back);

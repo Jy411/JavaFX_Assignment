@@ -20,14 +20,14 @@ import javafx.stage.Window;
 public class Register_Admin extends Application {
 
     public Register_Admin(Stage primaryStage) {
-        primaryStage.setTitle("Registration Form JavaFX Application");
+        primaryStage.setTitle("Admin Registration");
 
         // Create the registration form grid pane
         GridPane gridPane = createRegistrationFormPane();
         // Add UI controls to the registration form grid pane
         // Add Header
 
-        Label headerLabel = new Label("Registration Form");
+        Label headerLabel = new Label("Admin Registration Form");
         headerLabel.setFont(Font.font("Arial", FontWeight.BOLD, 24));
         gridPane.add(headerLabel, 0,0,2,1);
         GridPane.setHalignment(headerLabel, HPos.CENTER);
@@ -64,6 +64,7 @@ public class Register_Admin extends Application {
 
         // Add Submit Button
         Button submitButton = new Button("Submit");
+        submitButton.setId("loginButton");
         submitButton.setPrefHeight(40);
         submitButton.setDefaultButton(true);
         submitButton.setPrefWidth(100);
@@ -73,6 +74,7 @@ public class Register_Admin extends Application {
 
         // Add back Button
         Button back = new Button("Back");
+        back.setId("loginButton");
         back.setPrefHeight(40);
         back.setDefaultButton(true);
         back.setPrefWidth(100);
@@ -91,11 +93,6 @@ public class Register_Admin extends Application {
                     showAlert(Alert.AlertType.ERROR, gridPane.getScene().getWindow(), "Form Error!", "Please enter your password");
                     return;
                 }
-                /*if(cpasswordField.getText().isEmpty()) {
-                    showAlert(Alert.AlertType.ERROR, gridPane.getScene().getWindow(), "Form Error!", "Please enter your confirm password");
-                    return;
-                }*/
-
 
                 {
                     if(passwordField!=null) {
@@ -104,48 +101,37 @@ public class Register_Admin extends Application {
                             out.printf(nameField.getText());
                             out.printf(" ");
                             out.println(passwordField.getText());
-
-
-
-
-
-
                         } catch (IOException ioe) {
                             ioe.printStackTrace();
                         }
                     }}
-
-                back.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-                        try {
-                            RegisterSelection(primaryStage);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-
-
-
-
                 showAlert(Alert.AlertType.CONFIRMATION, gridPane.getScene().getWindow(), "Registration Successful!", "Welcome " + nameField.getText());
-
-
-
-
-
-
             }
         });
+
+        back.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    RegisterSelection(primaryStage);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
         // Create a scene with registration form grid pane as the root node
         Scene scene = new Scene(gridPane, 500, 500);
+        scene.getStylesheets().add(getClass().getResource("Buttons.css").toExternalForm());
         // Set the scene in primary stage
         primaryStage.setScene(scene);
 
         primaryStage.show();
     }
 
+    public static void main(String[] args) {
+        launch(args);
+    }
 
     private GridPane createRegistrationFormPane() {
         // Instantiate a new Grid Pane
@@ -195,11 +181,9 @@ public class Register_Admin extends Application {
         alert.initOwner(owner);
         alert.show();
     }
-    public void RegisterSelection(Stage primaryStage) throws IOException{
-        RegisterSelection loginSelection = new RegisterSelection(primaryStage);
 
-    }
-    public static void main(String[] args) {
-        launch(args);
+    public void RegisterSelection(Stage primaryStage) throws IOException{
+        RegisterSelection registerSelection = new RegisterSelection(primaryStage);
+
     }
 }

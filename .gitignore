@@ -4,3 +4,7 @@
 
 out/
 /bin/
+
+*.txt
+
+controlsfx-8/
