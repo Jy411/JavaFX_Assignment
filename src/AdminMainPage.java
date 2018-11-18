@@ -86,6 +86,16 @@ public class AdminMainPage {
             }
         });
 
+        discountButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    AdminPage_Discount(primaryStage);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         // last login time function
         Label lastLogin = new Label("");
@@ -138,14 +148,14 @@ public class AdminMainPage {
         LoginPage_Admin loginPageAdmin = new LoginPage_Admin(primaryStage);
         
     }
-    
-    
-    
-    
-    
 
     public void StocksPage(Stage primaryStage) throws IOException{
         StocksPage stocksPage = new StocksPage(primaryStage);
     }
+
+    public void AdminPage_Discount(Stage primaryStage) throws IOException{
+        AdminPage_Discount adminPage_Discount = new AdminPage_Discount(primaryStage);
+    }
+
 
 }

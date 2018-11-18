@@ -6,6 +6,25 @@ public class Items {
     private double itemCost;
     private String dateAdded;
     private int totalSold;
+    private double itemDiscount;
+    private double itemNewCost;
+
+    public Items(String itemName, double itemCost, double itemDiscount, double itemNewCost) {
+        this.itemName = itemName;
+        this.itemCost = itemCost;
+        this.itemDiscount = itemDiscount;
+        this.itemNewCost = itemNewCost;
+    }
+
+    public Items(String itemType, String itemName, int itemQuantity, double itemCost, double itemDiscount, double itemNewCost, String dateAdded) {
+        this.itemType = itemType;
+        this.itemName = itemName;
+        this.itemQuantity = itemQuantity;
+        this.itemCost = itemCost;
+        this.itemDiscount = itemDiscount;
+        this.itemNewCost = itemNewCost;
+        this.dateAdded = dateAdded;
+    }
 
     public Items(String itemName, double itemCost) {
         this.itemName = itemName;
@@ -22,8 +41,24 @@ public class Items {
 
     @Override
     public String toString() {
-        return itemType + "," + itemName + "," + itemQuantity + "," + itemCost
-                + "," + dateAdded;
+        return itemType + "," + itemName + "," + itemQuantity + "," + itemCost + ","
+                + itemDiscount + "," + itemNewCost + "," + dateAdded;
+    }
+
+    public double getItemDiscount() {
+        return itemDiscount;
+    }
+
+    public void setItemDiscount(double itemDiscount) {
+        this.itemDiscount = itemDiscount;
+    }
+
+    public double getItemNewCost() {
+        return itemNewCost;
+    }
+
+    public void setItemNewCost(double itemNewCost) {
+        this.itemNewCost = itemNewCost;
     }
 
     public int getTotalSold() {

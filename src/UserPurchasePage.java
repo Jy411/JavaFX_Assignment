@@ -166,7 +166,7 @@ public class UserPurchasePage {
             public void handle(ActionEvent event) {
                 VBox vBox = new VBox();
                 Label cartLabel = new Label("Cart");
-                cartLabel.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+                cartLabel.setFont(Font.font("Arial", FontWeight.BOLD, 25));
 
                 // File reader to read userCart.txt line by line
                 // and add to the tableview
@@ -206,13 +206,13 @@ public class UserPurchasePage {
                 totalCostLabel.setFont(Font.font("Arial", FontWeight.BOLD, 15));
                 Label totalCost = new Label();
                 // purchase button
-                Button buyButton = new Button("Purchase");
-                buyButton.setId("menuButton");
+                Button purchaseButton = new Button("Purchase");
+                purchaseButton.setId("menuButton");
 
                 HBox hBox1 = new HBox();
                 hBox1.setAlignment(Pos.CENTER);
                 hBox1.setSpacing(5);
-                hBox1.getChildren().addAll(buyButton, back);
+                hBox1.getChildren().addAll(purchaseButton, back);
 
                 double totalItemCost = 0;
                 // total cost calculator, loops through all the items in the list and adds up their cost
@@ -234,8 +234,8 @@ public class UserPurchasePage {
                 stage.setTitle("Cart");
                 stage.show();
 
-                // buy button function
-                buyButton.setOnAction(new EventHandler<ActionEvent>() {
+                // purchase button function
+                purchaseButton.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
                         // File reader to read itemsLog.txt line by line
@@ -244,6 +244,7 @@ public class UserPurchasePage {
                         try {
                             bufferedReader = new BufferedReader(new FileReader(itemsLog));
                             String readLine = "";
+                            // read each line
                             while ((readLine = bufferedReader.readLine()) != null){
                                 // Splits the string read into tokens
                                 String delimiter = ",";
@@ -255,7 +256,6 @@ public class UserPurchasePage {
                                 String itemDate = tokens[4];
                                 // Use tokens to create Items object
                                 Items item = new Items(itemType,itemName,itemQuan,itemCost,itemDate);
-
 
 
                             }

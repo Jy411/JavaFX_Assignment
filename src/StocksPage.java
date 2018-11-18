@@ -66,26 +66,29 @@ public class StocksPage {
         System.out.println("Loading data from itemsLog.txt");
         // clears the table again so that there are no duplicates
         data = FXCollections.observableArrayList();
-        while ((readLine = bufferedReader.readLine()) != null){
-            // Splits the string read into tokens
-            String delimiter = ",";
-            String[] tokens = readLine.split(delimiter);
-            String itemType = tokens[0];
-            String itemName = tokens[1];
-            int itemQuan = Integer.parseInt(tokens[2]);
-            double itemCost = Double.parseDouble(tokens[3]);
-            String itemDate = tokens[4];
-            // Use tokens to create Items object
-            Items item = new Items(itemType,itemName,itemQuan,itemCost,itemDate);
-            if (data.contains(item)){
-                System.out.println("EXISTS");
-            }
-            // if the array list does not contain the item already and does not have a quantity of 0
-            // add item to the list
-            else if ((!data.contains(item) && ((item.getItemQuantity()) != 0))){
-                data.add(item);
+        if (bufferedReader.readLine() != null){
+            while ((readLine = bufferedReader.readLine()) != null){
+                // Splits the string read into tokens
+                String delimiter = ",";
+                String[] tokens = readLine.split(delimiter);
+                String itemType = tokens[0];
+                String itemName = tokens[1];
+                int itemQuan = Integer.parseInt(tokens[2]);
+                double itemCost = Double.parseDouble(tokens[3]);
+                String itemDate = tokens[6];
+                // Use tokens to create Items object
+                Items item = new Items(itemType,itemName,itemQuan,itemCost,itemDate);
+                if (data.contains(item)){
+                    System.out.println("EXISTS");
+                }
+                // if the array list does not contain the item already and does not have a quantity of 0
+                // add item to the list
+                else if ((!data.contains(item) && ((item.getItemQuantity()) != 0))){
+                    data.add(item);
+                }
             }
         }
+
         // add items in data to the tableview
         tableView.setItems(data);
 
