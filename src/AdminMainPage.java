@@ -97,6 +97,16 @@ public class AdminMainPage {
                 }
             }
         });
+        reportsButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    Admin_Sales(primaryStage);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         // last login time function
         Label lastLogin = new Label("");
@@ -178,6 +188,8 @@ public class AdminMainPage {
 
     }
 
-
+    public void Admin_Sales (Stage primaryStage) throws IOException{
+        Admin_Sales adminSales =new Admin_Sales(primaryStage);
+    }
 
 }
