@@ -99,7 +99,7 @@ public class LoginPage_User extends Application {
                     BufferedReader reader = new BufferedReader(new FileReader(adminLogin));
                     String readLine;
                     while ((readLine = reader.readLine()) != null) {
-                        String delimiter = ",";
+                        String delimiter = " ";
                         String[] tokens = readLine.split(delimiter);
                         String username = tokens[0];
                         String password = tokens[1];
