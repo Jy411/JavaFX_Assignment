@@ -30,9 +30,6 @@ public class LoginSelection extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        // Variable to store the focus on stage load
-        final BooleanProperty firstTime = new SimpleBooleanProperty(true);
-
         // layout
         BorderPane loginPage = new BorderPane();
         // Customizing the look of the window
@@ -57,7 +54,6 @@ public class LoginSelection extends Application {
         loginGreeting.setFont(Font.font("Arial", FontWeight.BOLD,30));
         GridPane.setHalignment(loginGreeting, HPos.CENTER);
 
-        
         // Buttons for login
         Button loginUser = new Button("User\nLogin");
         loginUser.setStyle("-fx-text-alignment: center");
@@ -85,41 +81,25 @@ public class LoginSelection extends Application {
         vBox.setPadding(new Insets(0,0,80,0));
         loginPage.setCenter(vBox);
 
-        // to log login date and time
-        Date date = new Date();
-        SimpleDateFormat simpleDate =
-                new SimpleDateFormat("E, dd/MM/yyyy 'at' hh:mm:ss a");
-        File loginInfo = new File("adminLoginData.txt");
-        if (loginInfo.createNewFile()){
-            System.out.println("File created");
-        }
-        FileWriter writer = new FileWriter(loginInfo, true);
-
         // admin login function brings to admin page
         loginAdmin.setOnAction(new EventHandler<ActionEvent>() {
-        	 public void handle(ActionEvent event) {
-        		 
-		    	  try {
-					LoginPage_Admin(primaryStage);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-	    			
-		      }
-            
+            public void handle(ActionEvent event) {
+                try {
+                    LoginPage_Admin(primaryStage);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         });
 
         loginUser.setOnAction(new EventHandler<ActionEvent>() {
-        	public void handle(ActionEvent event) {
-		    	  try {
-					LoginPage_User(primaryStage);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-	    			
-		      }
+            public void handle(ActionEvent event) {
+                try {
+                    LoginPage_User(primaryStage);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         });
 
         Register.setOnAction(new EventHandler<ActionEvent>() {
@@ -130,7 +110,6 @@ public class LoginSelection extends Application {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
-
             }
         });
 
@@ -146,10 +125,12 @@ public class LoginSelection extends Application {
         LoginPage_Admin loginPageAdmin = new LoginPage_Admin(primaryStage);
     }
 
+    // create an object to link to the users page
     public void LoginPage_User(Stage primaryStage) throws IOException{
         LoginPage_User userPage = new LoginPage_User(primaryStage);
     }
 
+    // create an object to link to the registration page
     public void RegisterSelection(Stage primaryStage) throws IOException{
         RegisterSelection userPage = new RegisterSelection(primaryStage);
     }

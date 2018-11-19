@@ -82,17 +82,8 @@ public class Register_User extends Application {
                     return;
                 }
                 if(passwordField!=null) {
-                    try (PrintWriter out = new PrintWriter(new BufferedWriter(
-                            new FileWriter("user.txt", true)))) {
-                        out.printf(nameField.getText());
-                        out.printf(",");
-                        out.println(passwordField.getText());
-                        showAlert(Alert.AlertType.INFORMATION, gridPane.getScene().getWindow(), "Registration Successful!", "Successfully Registered " + nameField.getText());
-                        LoginSelection loginSelection = new LoginSelection();
-                        loginSelection.start(primaryStage);
-                    } catch (IOException ioe) {
-                        ioe.printStackTrace();
-                    }
+                    userRegistration(nameField.getText(), passwordField.getText(), primaryStage);
+                    showAlert(Alert.AlertType.INFORMATION, gridPane.getScene().getWindow(), "Registration Successful!", "Successfully Registered " + nameField.getText());
                 }
             }
         });
@@ -170,5 +161,18 @@ public class Register_User extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    private void userRegistration(String username, String password, Stage primaryStage){
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(
+                new FileWriter("user.txt", true)))) {
+            out.printf(username);
+            out.printf(",");
+            out.println(password);
+            LoginSelection loginSelection = new LoginSelection();
+            loginSelection.start(primaryStage);
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
     }
 }

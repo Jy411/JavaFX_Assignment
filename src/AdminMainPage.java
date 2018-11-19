@@ -134,6 +134,7 @@ public class AdminMainPage {
                 }
             }
         });
+
         // logout button functionality
         logoutButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override

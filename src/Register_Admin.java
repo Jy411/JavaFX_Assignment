@@ -84,17 +84,8 @@ public class Register_Admin extends Application {
                     return;
                 }
                 if (passwordField != null) {
-                    try (PrintWriter out = new PrintWriter(new BufferedWriter(
-                            new FileWriter("admin.txt", true)))) {
-                        out.printf(nameField.getText());
-                        out.printf(",");
-                        out.println(passwordField.getText());
-                        showAlert(Alert.AlertType.INFORMATION, gridPane.getScene().getWindow(), "Registration Successful!", "Successfully Registered " + nameField.getText());
-                        LoginSelection loginSelection = new LoginSelection();
-                        loginSelection.start(primaryStage);
-                    } catch (IOException ioe) {
-                        ioe.printStackTrace();
-                    }
+                    adminRegistration(nameField.getText(), passwordField.getText(), primaryStage);
+                    showAlert(Alert.AlertType.INFORMATION, gridPane.getScene().getWindow(), "Registration Successful!", "Successfully Registered " + nameField.getText());
                 }
             }
         });
@@ -140,7 +131,6 @@ public class Register_Admin extends Application {
         gridPane.setVgap(10);
 
         // Add Column Constraints
-
         // columnOneConstraints will be applied to all the nodes placed in column one.
         ColumnConstraints columnOneConstraints = new ColumnConstraints(100, 100, Double.MAX_VALUE);
         columnOneConstraints.setHalignment(HPos.RIGHT);
@@ -170,6 +160,18 @@ public class Register_Admin extends Application {
 
     public void RegisterSelection(Stage primaryStage) throws IOException{
         RegisterSelection registerSelection = new RegisterSelection(primaryStage);
+    }
 
+    private void adminRegistration(String username, String password, Stage primaryStage){
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(
+                new FileWriter("admin.txt", true)))) {
+            out.printf(username);
+            out.printf(",");
+            out.println(password);
+            LoginSelection loginSelection = new LoginSelection();
+            loginSelection.start(primaryStage);
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
     }
 }

@@ -30,8 +30,6 @@ public class ChangePassword_Admin extends Application{
 
     @Override
     public void start(Stage stage) throws Exception {
-        // TODO Auto-generated method stub
-
         Label lblusername = new Label("Username ");
         lblusername.setFont(Font.font("Arial", FontWeight.BOLD, 15));
         TextField tfusername = new TextField();
@@ -58,17 +56,12 @@ public class ChangePassword_Admin extends Application{
         Info.setSpacing(8);
         Info.setPadding(new Insets(10,10,10,10));
 
-
-
         HBox hBox = new HBox();
         hBox.setAlignment(Pos.CENTER);
         hBox.setSpacing(5);
         hBox.getChildren().addAll(btnsubmit,btnBack);
 
         Info.getChildren().addAll(lblusername,tfusername,lblpassword,pfold,lblnewpass,pfnew,lblconfirmpass,pfconfirmnew,hBox);
-
-
-
 
         BorderPane bpane = new BorderPane();
         bpane.setCenter(Info);
@@ -135,7 +128,6 @@ public class ChangePassword_Admin extends Application{
         });
 
         Scene scene1 = new Scene(bpane);
-
         stage.setScene(scene1);
         stage.show();
     }

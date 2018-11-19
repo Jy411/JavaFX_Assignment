@@ -59,39 +59,8 @@ public class StocksPage {
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         tableView.setStyle("-fx-background-color: #f0f4f5");
 
-        // File reader to read itemsLog.txt line by line and add to Table
-        File itemsLog = new File("itemsLog.txt");
-        BufferedReader bufferedReader = new BufferedReader(new FileReader(itemsLog));
-        String readLine = "";
-        System.out.println("Loading data from itemsLog.txt");
-        // clears the table again so that there are no duplicates
-        data = FXCollections.observableArrayList();
-        if (bufferedReader.readLine() != null){
-            while ((readLine = bufferedReader.readLine()) != null){
-                // Splits the string read into tokens
-                String delimiter = ",";
-                String[] tokens = readLine.split(delimiter);
-                String itemType = tokens[0];
-                String itemName = tokens[1];
-                int itemQuan = Integer.parseInt(tokens[2]);
-                double itemCost = Double.parseDouble(tokens[3]);
-                String itemDate = tokens[6];
-                // Use tokens to create Items object
-                Items item = new Items(itemType,itemName,itemQuan,itemCost,itemDate);
-                if (data.contains(item)){
-                    System.out.println("EXISTS");
-                }
-                // if the array list does not contain the item already and does not have a quantity of 0
-                // add item to the list
-                else if ((!data.contains(item) && ((item.getItemQuantity()) != 0))){
-                    data.add(item);
-                }
-            }
-        }
-
-        // add items in data to the tableview
-        tableView.setItems(data);
-
+        // Load itemsLog.txt to TableView
+        loadTable(tableView);
         // button at bottom to add stuff
         Button addButton = new Button("Add Item");
 
@@ -217,7 +186,6 @@ public class StocksPage {
                     removeQuantity.setFont(Font.font("Arial", FontWeight.BOLD, 15));
                     TextField itemQuanField = new TextField();
 
-                    String finalItemName = "";
                     // change listener for dropdown box
                     itemNameBox.valueProperty().addListener(new ChangeListener() {
                         @Override
@@ -227,7 +195,6 @@ public class StocksPage {
                                 // gets value of key
                                 int quantity = itemNameQuan.get(newValue.toString());
                                 itemQuanLabel.setText(Integer.toString(quantity));
-
                             }
                         }
                     });
@@ -258,7 +225,7 @@ public class StocksPage {
                                     String itemName = tokens[1];
                                     int oldItemQuan = Integer.parseInt(tokens[2]);
                                     double itemCost = Double.parseDouble(tokens[3]);
-                                    String itemDate = tokens[4];
+                                    String itemDate = tokens[6];
                                     int newItemQuan = oldItemQuan - removeQuan; // after removing set quantity
 
                                     Items items = new Items(itemType,itemName,newItemQuan,itemCost,itemDate);
@@ -359,4 +326,42 @@ public class StocksPage {
     public void AdminPage(Stage primaryStage) throws IOException {
         AdminMainPage adminMainPage = new AdminMainPage(primaryStage);
     }
+
+    private void loadTable(TableView tableView) throws IOException {
+        // File reader to read itemsLog.txt line by line and add to Table
+        File itemsLog = new File("itemsLog.txt");
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(itemsLog));
+        String readLine;
+        System.out.println("Loading data from itemsLog.txt");
+        // clears the table again so that there are no duplicates
+        data = FXCollections.observableArrayList();
+        while ((readLine = bufferedReader.readLine()) != null){
+            // Splits the string read into tokens
+            String delimiter = ",";
+            String[] tokens = readLine.split(delimiter);
+            String itemType = tokens[0];
+            String itemName = tokens[1];
+            int itemQuan = Integer.parseInt(tokens[2]);
+            double itemCost = Double.parseDouble(tokens[3]);
+            String itemDate = tokens[6];
+            System.out.println("READLINE:" + readLine);
+            System.out.println("ITEMTYPE:" + itemType);
+            System.out.println("ITEMNAME:" + itemName);
+            System.out.println("ITEMQUAN:" + itemQuan);
+            System.out.println("ITEMCOST:" + itemCost);
+            System.out.println("ITEMDATE:" + itemDate);
+            // Use tokens to create Items object
+            Items item = new Items(itemType,itemName,itemQuan,itemCost,itemDate);
+            if (data.contains(item)){
+                System.out.println("EXISTS");
+            }
+            // if the array list does not contain the item already and does not have a quantity of 0
+            // add item to the list
+            else if ((!data.contains(item) && ((item.getItemQuantity()) != 0))){
+                data.add(item);
+            }
+        }
+        tableView.setItems(data);
+    }
+
 }

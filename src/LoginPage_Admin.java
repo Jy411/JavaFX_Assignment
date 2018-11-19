@@ -26,7 +26,6 @@ import java.util.Scanner;
 public class LoginPage_Admin extends Application {
 
     public LoginPage_Admin(Stage primaryStage) throws IOException {
-        // TODO Auto-generated constructor stub
         // Variable to store the focus on stage load
         final BooleanProperty firstTime = new SimpleBooleanProperty(true);
 
@@ -88,20 +87,6 @@ public class LoginPage_Admin extends Application {
         vBox.setPadding(new Insets(0,0,80,0));
         loginPage.setCenter(vBox);
 
-        // to log login date and time
-        Date date = new Date();
-        SimpleDateFormat simpleDate =
-                new SimpleDateFormat("E, dd/MM/yyyy 'at' hh:mm:ss a");
-        File loginInfo = new File("adminLoginData.txt");
-        FileWriter writer = new FileWriter(loginInfo, true);
-        try {
-            if (loginInfo.createNewFile()){
-                System.out.println("File created");
-            }
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
-
         // admin login function brings to admin page
         loginAdmin.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -116,9 +101,8 @@ public class LoginPage_Admin extends Application {
                         String username = tokens[0];
                         String password = tokens[1];
                         if (usernameField.getText().equals(username) && passwordField.getText().equals(password)){
-                            // write date of login to adminLoginData.txt here
-                            writer.write(simpleDate.format(date) + "\n");
-                            writer.close();
+                            // to log login date and time
+                            recordAdminLogin();
                             // creates pop up notification at the corner
                             Notifications.create()
                                     .title("Login Successful!")
@@ -176,4 +160,24 @@ public class LoginPage_Admin extends Application {
         LoginSelection loginSelection = new LoginSelection();
         loginSelection.start(primaryStage);
     }
+
+    private void recordAdminLogin() throws IOException {
+        // to log login date and time
+        Date date = new Date();
+        SimpleDateFormat simpleDate =
+                new SimpleDateFormat("E, dd/MM/yyyy 'at' hh:mm:ss a");
+        File loginInfo = new File("adminLoginData.txt");
+        FileWriter writer = new FileWriter(loginInfo, true);
+        try {
+            if (loginInfo.createNewFile()){
+                System.out.println("File created");
+            }
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        // write date of login to adminLoginData.txt here
+        writer.write(simpleDate.format(date) + "\n");
+        writer.close();
+    }
+
 }

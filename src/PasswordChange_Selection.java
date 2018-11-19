@@ -25,18 +25,17 @@ import java.util.Date;
 public class PasswordChange_Selection {
 
     public PasswordChange_Selection(Stage primaryStage) throws IOException {
-
         // layout
         BorderPane loginPage = new BorderPane();
         // Customizing the look of the window
-        loginPage.setMinSize(500,500);
+        loginPage.setMinSize(500, 500);
         loginPage.setStyle("-fx-background-color: #f0f4f5");
 
         // grocery logo and name set in TOP borderpane
         Label grocerInfo = new Label("Your grocer of choice!");
         BorderPane.setAlignment(grocerInfo, Pos.CENTER); // sets the label center
-        grocerInfo.setFont(Font.font("Arial", FontPosture.ITALIC,20));
-        grocerInfo.setPadding(new Insets(30,0,0,0));
+        grocerInfo.setFont(Font.font("Arial", FontPosture.ITALIC, 20));
+        grocerInfo.setPadding(new Insets(30, 0, 0, 0));
         Image grocerImage = new Image(getClass().getResourceAsStream("images/shop.png"));
         ImageView imageView = new ImageView(grocerImage);
         imageView.setPreserveRatio(true);
@@ -47,9 +46,8 @@ public class PasswordChange_Selection {
 
         // Labels for login
         Label loginGreeting = new Label("Change password");
-        loginGreeting.setFont(Font.font("Arial", FontWeight.BOLD,30));
+        loginGreeting.setFont(Font.font("Arial", FontWeight.BOLD, 30));
         GridPane.setHalignment(loginGreeting, HPos.CENTER);
-
 
         // Buttons for login
         Button loginUser = new Button("User");
@@ -68,25 +66,15 @@ public class PasswordChange_Selection {
         // ALL the login stuff in CENTER
         VBox vBox = new VBox();
         HBox hBox = new HBox();
-        hBox.getChildren().addAll(loginAdmin,loginUser,Register);
+        hBox.getChildren().addAll(loginAdmin, loginUser, Register);
         hBox.setSpacing(10);
         hBox.setAlignment(Pos.CENTER);
-        vBox.getChildren().addAll(loginGreeting,hBox);
+        vBox.getChildren().addAll(loginGreeting, hBox);
         vBox.setAlignment(Pos.CENTER);
         vBox.setSpacing(10);
         vBox.setMaxWidth(200);
-        vBox.setPadding(new Insets(0,0,80,0));
+        vBox.setPadding(new Insets(0, 0, 80, 0));
         loginPage.setCenter(vBox);
-
-        // to log login date and time
-        Date date = new Date();
-        SimpleDateFormat simpleDate =
-                new SimpleDateFormat("E, dd/MM/yyyy 'at' hh:mm:ss a");
-        File loginInfo = new File("adminLoginData.txt");
-        if (loginInfo.createNewFile()){
-            System.out.println("File created");
-        }
-        FileWriter writer = new FileWriter(loginInfo, true);
 
         // admin login function brings to admin page
         loginAdmin.setOnAction(new EventHandler<ActionEvent>() {
@@ -97,9 +85,7 @@ public class PasswordChange_Selection {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
-
             }
-
         });
 
         loginUser.setOnAction(new EventHandler<ActionEvent>() {
@@ -110,7 +96,6 @@ public class PasswordChange_Selection {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
-
             }
         });
 
@@ -122,11 +107,8 @@ public class PasswordChange_Selection {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
-
             }
         });
-
-
 
         Scene loginScene = new Scene(loginPage);
         loginScene.getStylesheets().add(getClass().getResource("Buttons.css").toExternalForm());
@@ -134,11 +116,6 @@ public class PasswordChange_Selection {
         primaryStage.setTitle("The Grocer Stock Management System");
         primaryStage.show();
     }
-
-    public PasswordChange_Selection() {
-
-    }
-
 
     // create an object to link to the admins page
     public void ChangePassword_Admin(Stage primaryStage) throws IOException {
@@ -158,17 +135,8 @@ public class PasswordChange_Selection {
             e.printStackTrace();
         }
     }
-    public void LoginSelection(Stage primaryStage) throws IOException{
 
-        LoginSelection selection =new LoginSelection();
-        selection.start(primaryStage);
-    }
-
-    public void start(Stage primaryStage) {
-    }
-    public void AdminMainPage(Stage primaryStage)throws IOException{
-        AdminMainPage adminpage=new AdminMainPage(primaryStage);
-
-
+    public void AdminMainPage(Stage primaryStage) throws IOException {
+        AdminMainPage adminpage = new AdminMainPage(primaryStage);
     }
 }
