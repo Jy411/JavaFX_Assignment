@@ -88,9 +88,6 @@ public class UserPurchasePage {
                                 itemCatalog.getItems().addAll(itemName);
                             }
                         }
-                        int itemQuan = Integer.parseInt(tokens[2]);
-                        double itemCost = Double.parseDouble(tokens[3]);
-                        String itemDate = tokens[4];
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -109,7 +106,7 @@ public class UserPurchasePage {
                     // creates pop up notification at the corner
                     Notifications.create()
                     .title("Success!")
-                    .text("Item Successfully Added to Cart.")
+                    .text(itemCatalog.getSelectionModel().getSelectedItem().toString() + " Successfully Added to Cart.")
                     .hideAfter(new Duration(1000))
                     .showInformation();
 
@@ -125,11 +122,8 @@ public class UserPurchasePage {
                             // Splits the string read into tokens
                             String delimiter = ",";
                             String[] tokens = readLine.split(delimiter);
-                            String itemType1 = tokens[0];
                             String itemName = tokens[1];
-                            int itemQuan = Integer.parseInt(tokens[2]);
                             double itemCost = Double.parseDouble(tokens[3]);
-                            String itemDate = tokens[4];
                             // if selected item in listview is in the itemLog file
                             if (itemCatalog.getSelectionModel().getSelectedItem().toString().equals(itemName)){
                                 // write down items in userCart.txt
@@ -167,8 +161,7 @@ public class UserPurchasePage {
                 VBox vBox = new VBox();
                 Label cartLabel = new Label("Cart");
                 cartLabel.setFont(Font.font("Arial", FontWeight.BOLD, 25));
-                // File reader to read userCart.txt line by line
-                // and add to the tableview
+                // File reader to read userCart.txt line by line and add to the tableview
                 File userCart = new File("userCart.txt");
                 BufferedReader bufferedReader;
                 try {
@@ -182,7 +175,6 @@ public class UserPurchasePage {
                         String itemName = tokens[0];
                         double itemCost = Double.parseDouble(tokens[1]);
                         Items items = new Items(itemName, itemCost);
-                        System.out.println(items);
                         if (data.contains(items)){
                             System.out.println("EXISTS");
                         }
@@ -197,9 +189,6 @@ public class UserPurchasePage {
 
                 itemCart.setItems(data);
 
-                // back button
-                Button back = new Button("Back");
-                back.setId("menuButton");
                 // cost label
                 Label totalCostLabel = new Label("Total Cost (RM)");
                 totalCostLabel.setFont(Font.font("Arial", FontWeight.BOLD, 15));
@@ -207,14 +196,20 @@ public class UserPurchasePage {
                 // purchase button
                 Button purchaseButton = new Button("Purchase");
                 purchaseButton.setId("menuButton");
+                // back button
+                Button back = new Button("Back");
+                back.setId("menuButton");
+                // clear cart button
+                Button clearCartButton = new Button("Clear");
+                clearCartButton.setId("menuButton");
 
                 HBox hBox1 = new HBox();
                 hBox1.setAlignment(Pos.CENTER);
                 hBox1.setSpacing(5);
-                hBox1.getChildren().addAll(purchaseButton, back);
+                hBox1.getChildren().addAll(purchaseButton,clearCartButton, back);
 
-                double totalItemCost = 0;
                 // total cost calculator, loops through all the items in the list and adds up their cost
+                double totalItemCost = 0;
                 for (Items i : itemCart.getItems()){
                     double itemCost = i.getItemCost();
                     totalItemCost = totalItemCost + itemCost;
@@ -239,13 +234,13 @@ public class UserPurchasePage {
                     public void handle(ActionEvent event) {
                         // File reader to read itemsLog.txt line by line
                         File itemsLog = new File("itemsLog.txt");
-                        BufferedReader bufferedReader = null;
+                        BufferedReader bufferedReader;
                         //Holds old file content
                         String oldContent = "";
                         String newContent = "";
                         try {
                             bufferedReader = new BufferedReader(new FileReader(itemsLog));
-                            String readLine = "", newLine = "";
+                            String readLine, newLine;
                             // read each line
                             while ((readLine = bufferedReader.readLine()) != null){
                                 //appends all file into oldContent
@@ -260,10 +255,11 @@ public class UserPurchasePage {
                                 double itemDiscount = Double.parseDouble(tokens[4]);
                                 double itemNewCost = Double.parseDouble(tokens[5]);
                                 String itemDate = tokens[6];
-                                int newItemQuantity = itemQuan - 1;
+                                int itemNewQuantity = itemQuan - 1;
 
-                                // Use tokens to create Items object
-                                Items items = new Items(itemType,itemName,newItemQuantity,itemCost,itemDiscount,itemNewCost,itemDate);
+                                // item with new quantity
+                                Items items = new Items(itemType,itemName,itemNewQuantity,itemCost,itemDiscount,itemNewCost,itemDate);
+                                System.out.println("CURRENT ITEM: " + items);
 
                                 // for each item in itemCart
                                 for (Items i : itemCart.getItems()){
@@ -271,14 +267,11 @@ public class UserPurchasePage {
                                     if (i.getItemName().equals(itemName)){
                                         // updated line with updated item quantity
                                         newLine = items.toString();
-                                        System.out.println(newLine);
-                                        System.out.println(oldContent);
                                         newContent = oldContent.replaceAll(readLine,newLine);
-                                        oldContent = "";
+                                        oldContent = newContent;
                                     }
                                 }
                             }
-                            newContent = newContent + oldContent;
                             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("itemsLog.txt"));
                             bufferedWriter.write(newContent);
                             bufferedWriter.close();
@@ -302,6 +295,20 @@ public class UserPurchasePage {
                     }
                 });
 
+                // clear cart by deleting data in userCart.txt
+                clearCartButton.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        itemCart.getItems().clear();
+                        try {
+                            FileWriter fileWriter = new FileWriter(userCart);
+                            fileWriter.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
 
             }
         });
@@ -311,8 +318,6 @@ public class UserPurchasePage {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    PrintWriter printWriter = new PrintWriter("userCart.txt");
-                    printWriter.close();
                     UserMainPage userMainPage = new UserMainPage(primaryStage);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -320,7 +325,6 @@ public class UserPurchasePage {
 
             }
         });
-
 
         cart.setId("menuButton");
         back.setId("menuButton");

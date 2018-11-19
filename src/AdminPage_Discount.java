@@ -12,12 +12,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -61,34 +56,8 @@ public class AdminPage_Discount {
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         tableView.setStyle("-fx-background-color: #f0f4f5");
 
-        // File reader to read itemsLog.txt line by line and add to Table
-        File itemsLog = new File("itemsLog.txt");
-        BufferedReader bufferedReader = new BufferedReader(new FileReader(itemsLog));
-        String readLine = "";
-        System.out.println("Loading data1 from itemsLog.txt");
-        // clears the table again so that there are no duplicates
-        data1 = FXCollections.observableArrayList();
-        while ((readLine = bufferedReader.readLine()) != null){
-            // Splits the string read into tokens
-            String delimiter = ",";
-            String[] tokens = readLine.split(delimiter);
-            String itemNameToken = tokens[1];
-            double itemCostToken = Double.parseDouble(tokens[3]);
-            double itemDiscountToken = Double.parseDouble(tokens[4]);
-            double itemNewCostToken = itemCostToken - (itemDiscountToken * itemCostToken);
-            // Use tokens to create Items object
-            Items item = new Items(itemNameToken,itemCostToken,itemDiscountToken,itemNewCostToken);
-            if (data1.contains(item)){
-                System.out.println("EXISTS");
-            }
-            // if the array list does not contain the item already and does not have a quantity of 0
-            // add item to the list
-            else if ((!data1.contains(item))){
-                data1.add(item);
-            }
-        }
-        // add items in data1 to the tableview
-        tableView.setItems(data1);
+        // load table
+        loadDiscountTable(tableView);
 
         // button at bottom to set discount 
         Button setDiscountButton = new Button("Set Item Discount");
@@ -116,7 +85,7 @@ public class AdminPage_Discount {
                 BufferedReader bufferedReader = null;
                 try {
                     bufferedReader = new BufferedReader(new FileReader(itemsLog));
-                    String readLine = "";
+                    String readLine;
                     while ((readLine = bufferedReader.readLine()) != null){
                         // Splits the string read into tokens
                         String delimiter = ",";
@@ -152,75 +121,9 @@ public class AdminPage_Discount {
                         String itemName = (String) itemNameBox.getValue();
                         //Get user input item discount form text field
                         double itemDiscount = Double.parseDouble(itemDiscountField.getText()) / 100;
-                        File itemsLog = new File ("itemsLog.txt");
-                        //Holds old file content
-                        String oldContent = "";
-                        String newContent = "";
-
+                        setDiscount(itemName, itemDiscount);
                         try {
-                        	BufferedReader bufferedReader = new BufferedReader(new FileReader(itemsLog));
-                        	String readLine = "", newLine = "";
-                        	while ((readLine = bufferedReader.readLine()) != null) {
-                        		//appends all file into oldContent
-                        		oldContent = oldContent + readLine + System.lineSeparator();
-                        		
-                        		//Splits the string read into tokens
-                        		String delimiter = ",";
-                        		String[] tokens = readLine.split(delimiter);
-                        		String itemTypeToken = tokens[0];
-                        		String itemNameToken = tokens[1];
-                        		int itemQuantityToken = Integer.parseInt(tokens[2]);
-                        		double itemCostToken = Double.parseDouble(tokens[3]);
-                        		double itemDiscountToken = itemDiscount;
-                        		double itemNewCostToken = itemCostToken - (itemDiscount * itemCostToken);
-                        		String itemDateToken = tokens[6];
-                        		Items items = new Items(itemTypeToken,itemNameToken,itemQuantityToken,itemCostToken,
-                        					itemDiscountToken,itemNewCostToken,itemDateToken);
-                        		// replaces old line with new updated line
-                        		if (readLine.contains(itemName)) {
-                        			newLine = items.toString();
-                        			newContent = oldContent.replace(readLine,newLine);
-                        			oldContent = "";
-                        		}
-                            }
-                        	newContent = newContent + oldContent;
-                            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("itemsLog.txt"));
-                            bufferedWriter.write(newContent);
-                            bufferedWriter.close();
-                            bufferedReader.close();
-                        } catch (IOException e) {
-                        	e.printStackTrace();
-                        }
-                        // File reader to read itemsLog.txt line by line and add to Table
-                        BufferedReader bufferedReader = null;
-                        try {
-                            bufferedReader = new BufferedReader(new FileReader(itemsLog));
-                            String readLine = "";
-                            System.out.println("Loading data1 from itemsLog.txt");
-                            // clears the table again so that there are no duplicates
-                            data1 = FXCollections.observableArrayList();
-                            while ((readLine = bufferedReader.readLine()) != null){
-                                // Splits the string read into tokens
-                                String delimiter = ",";
-                                String[] tokens = readLine.split(delimiter);
-                                String itemNameToken = tokens[1];
-                                double itemCostToken = Double.parseDouble(tokens[3]);
-                                double itemDiscountToken = Double.parseDouble(tokens[4]);
-                                double itemNewCostToken = itemCostToken - (itemDiscountToken * itemCostToken);
-                                // Use tokens to create Items object
-                                Items item = new Items(itemNameToken,itemCostToken,itemDiscountToken,itemNewCostToken);
-                                if (data1.contains(item)){
-                                    System.out.println("EXISTS");
-                                }
-                                // if the array list does not contain the item already and does not have a quantity of 0
-                                // add item to the list
-                                else if ((!data1.contains(item))){
-                                    data1.add(item);
-                                }
-                            }
-                            // add items in data1 to the tableview
-                            tableView.setItems(data1);
-                            tableView.refresh();
+                            loadDiscountTable(tableView);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -275,5 +178,79 @@ public class AdminPage_Discount {
     public void AdminPage(Stage primaryStage) throws IOException {
         AdminMainPage adminMainPage = new AdminMainPage(primaryStage);
     }
-	
+
+    private void loadDiscountTable(TableView tableView) throws IOException {
+        // File reader to read itemsLog.txt line by line and add to Table
+        File itemsLog = new File("itemsLog.txt");
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(itemsLog));
+        String readLine = "";
+        System.out.println("Loading data1 from itemsLog.txt");
+        // clears the table again so that there are no duplicates
+        data1 = FXCollections.observableArrayList();
+        while ((readLine = bufferedReader.readLine()) != null){
+            // Splits the string read into tokens
+            String delimiter = ",";
+            String[] tokens = readLine.split(delimiter);
+            String itemNameToken = tokens[1];
+            double itemCostToken = Double.parseDouble(tokens[3]);
+            double itemDiscountToken = Double.parseDouble(tokens[4]);
+            double itemNewCostToken = itemCostToken - (itemDiscountToken * itemCostToken);
+            // Use tokens to create Items object
+            Items item = new Items(itemNameToken,itemCostToken,itemDiscountToken,itemNewCostToken);
+            if (data1.contains(item)){
+                System.out.println("EXISTS");
+            }
+            // if the array list does not contain the item already and does not have a quantity of 0
+            // add item to the list
+            else if ((!data1.contains(item))){
+                data1.add(item);
+            }
+        }
+        // add items in data1 to the tableview
+        tableView.setItems(data1);
+    }
+
+    private void setDiscount(String itemName, double discountValue){
+        File itemsLog = new File ("itemsLog.txt");
+        //Holds old file content
+        String oldContent = "";
+        String newContent = "";
+        try {
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(itemsLog));
+            String readLine = "", newLine = "";
+            while ((readLine = bufferedReader.readLine()) != null) {
+                //appends all file into oldContent
+                oldContent = oldContent + readLine + System.lineSeparator();
+
+                //Splits the string read into tokens
+                String delimiter = ",";
+                String[] tokens = readLine.split(delimiter);
+                String itemTypeToken = tokens[0];
+                String itemNameToken = tokens[1];
+                int itemQuantityToken = Integer.parseInt(tokens[2]);
+                double itemCostToken = Double.parseDouble(tokens[3]);
+                double itemDiscountToken = discountValue;
+                double itemNewCostToken = itemCostToken - (discountValue * itemCostToken);
+                String itemDateToken = tokens[6];
+                Items items = new Items(itemTypeToken,itemNameToken,itemQuantityToken,itemCostToken,
+                        itemDiscountToken,itemNewCostToken,itemDateToken);
+                // replaces old line with new updated line
+                if (readLine.contains(itemName)) {
+                    newLine = items.toString();
+                    newContent = oldContent.replace(readLine,newLine);
+                    oldContent = "";
+                }
+            }
+            newContent = newContent + oldContent;
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("itemsLog.txt"));
+            bufferedWriter.write(newContent);
+            bufferedWriter.close();
+            bufferedReader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
 }

@@ -135,7 +135,6 @@ public class StocksPage {
                         stage.close();
                     }
                 });
-
             }
         });
 
@@ -161,7 +160,7 @@ public class StocksPage {
                 HashMap<String,Integer> itemNameQuan = new HashMap<>();
                 try {
                     BufferedReader bufferedReader = new BufferedReader(new FileReader(itemsLog));
-                    String readLine = "";
+                    String readLine;
                     while ((readLine = bufferedReader.readLine()) != null){
                         // Splits the string read into tokens
                         String delimiter = ",";
@@ -173,9 +172,11 @@ public class StocksPage {
                         if (itemQuan != 0){
                             itemNameBox.getItems().addAll(itemName);
                         }
+
                         // adds item and quantity pair into HashMap
                         itemNameQuan.put(itemName, itemQuan);
                     }
+
                     // labels for dropdown and fields
                     Label dropdownLabel = new Label("Item Name");
                     dropdownLabel.setFont(Font.font("Arial", FontWeight.BOLD, 15));
@@ -208,55 +209,14 @@ public class StocksPage {
                             int removeQuan = Integer.parseInt(itemQuanField.getText());
                             // name of item to be removed
                             String removeItem = itemNameBox.getValue().toString();
-                            File itemsLog = new File("itemsLog.txt");
-                            // holds old file content
-                            String oldContent = "";
-                            String newContent = "";
-                            try {
-                                BufferedReader bufferedReader = new BufferedReader(new FileReader(itemsLog));
-                                String readLine = "", newLine = "";
-                                while ((readLine = bufferedReader.readLine()) != null){
-                                    // appends all of file into oldContent
-                                    oldContent = oldContent + readLine + System.lineSeparator();
-                                    // Splits the string read into tokens
-                                    String delimiter = ",";
-                                    String[] tokens = readLine.split(delimiter);
-                                    String itemType = tokens[0];
-                                    String itemName = tokens[1];
-                                    int oldItemQuan = Integer.parseInt(tokens[2]);
-                                    double itemCost = Double.parseDouble(tokens[3]);
-                                    String itemDate = tokens[6];
-                                    int newItemQuan = oldItemQuan - removeQuan; // after removing set quantity
-
-                                    Items items = new Items(itemType,itemName,newItemQuan,itemCost,itemDate);
-                                    // if line is the selected item
-                                    if (readLine.contains(removeItem)) {
-                                        // readLine is whats needed to be replaced, and newLine is what is replacing it
-                                        newLine = items.toString();
-                                        // replaces readLine with newLine in newContent buffer strings
-                                        newContent = oldContent.replace(readLine, newLine);
-                                        oldContent = "";
-                                    }
-                                }
-                                // appends remaining unchanged lines to newContent
-                                newContent = newContent + oldContent;
-                                // writes everything to itemsLog.txt
-                                BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("itemsLog.txt"));
-                                bufferedWriter.write(newContent);
-                                bufferedWriter.close();
-                                bufferedReader.close();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-
+                            // item to be removed, and quantity to be changed
+                            removeItem(removeItem,removeQuan);
                             try {
                                 stage.close();
                                 StocksPage stocksPage = new StocksPage(primaryStage);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-
-
 
                         }
                     });
@@ -344,12 +304,6 @@ public class StocksPage {
             int itemQuan = Integer.parseInt(tokens[2]);
             double itemCost = Double.parseDouble(tokens[3]);
             String itemDate = tokens[6];
-            System.out.println("READLINE:" + readLine);
-            System.out.println("ITEMTYPE:" + itemType);
-            System.out.println("ITEMNAME:" + itemName);
-            System.out.println("ITEMQUAN:" + itemQuan);
-            System.out.println("ITEMCOST:" + itemCost);
-            System.out.println("ITEMDATE:" + itemDate);
             // Use tokens to create Items object
             Items item = new Items(itemType,itemName,itemQuan,itemCost,itemDate);
             if (data.contains(item)){
@@ -362,6 +316,49 @@ public class StocksPage {
             }
         }
         tableView.setItems(data);
+    }
+
+    private void removeItem(String removeItem, int removeQuantity){
+        File itemsLog = new File("itemsLog.txt");
+        // holds old file content
+        String oldContent = "";
+        String newContent = "";
+        try {
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(itemsLog));
+            String readLine, newLine;
+            while ((readLine = bufferedReader.readLine()) != null){
+                // appends all of file into oldContent
+                oldContent = oldContent + readLine + System.lineSeparator();
+                // Splits the string read into tokens
+                String delimiter = ",";
+                String[] tokens = readLine.split(delimiter);
+                String itemType = tokens[0];
+                String itemName = tokens[1];
+                int oldItemQuan = Integer.parseInt(tokens[2]);
+                double itemCost = Double.parseDouble(tokens[3]);
+                String itemDate = tokens[6];
+                int newItemQuan = oldItemQuan - removeQuantity; // after removing set quantity
+
+                Items items = new Items(itemType,itemName,newItemQuan,itemCost,itemDate);
+                // if line is the selected item
+                if (readLine.contains(removeItem)) {
+                    // readLine is whats needed to be replaced, and newLine is what is replacing it
+                    newLine = items.toString();
+                    // replaces readLine with newLine in newContent buffer strings
+                    newContent = oldContent.replace(readLine, newLine);
+                    oldContent = "";
+                }
+            }
+            // appends remaining unchanged lines to newContent
+            newContent = newContent + oldContent;
+            // writes everything to itemsLog.txt
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("itemsLog.txt"));
+            bufferedWriter.write(newContent);
+            bufferedWriter.close();
+            bufferedReader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
