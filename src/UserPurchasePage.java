@@ -167,7 +167,6 @@ public class UserPurchasePage {
                 VBox vBox = new VBox();
                 Label cartLabel = new Label("Cart");
                 cartLabel.setFont(Font.font("Arial", FontWeight.BOLD, 25));
-
                 // File reader to read userCart.txt line by line
                 // and add to the tableview
                 File userCart = new File("userCart.txt");
@@ -241,11 +240,16 @@ public class UserPurchasePage {
                         // File reader to read itemsLog.txt line by line
                         File itemsLog = new File("itemsLog.txt");
                         BufferedReader bufferedReader = null;
+                        //Holds old file content
+                        String oldContent = "";
+                        String newContent = "";
                         try {
                             bufferedReader = new BufferedReader(new FileReader(itemsLog));
-                            String readLine = "";
+                            String readLine = "", newLine = "";
                             // read each line
                             while ((readLine = bufferedReader.readLine()) != null){
+                                //appends all file into oldContent
+                                oldContent = oldContent + readLine + System.lineSeparator();
                                 // Splits the string read into tokens
                                 String delimiter = ",";
                                 String[] tokens = readLine.split(delimiter);
@@ -253,12 +257,32 @@ public class UserPurchasePage {
                                 String itemName = tokens[1];
                                 int itemQuan = Integer.parseInt(tokens[2]);
                                 double itemCost = Double.parseDouble(tokens[3]);
-                                String itemDate = tokens[4];
+                                double itemDiscount = Double.parseDouble(tokens[4]);
+                                double itemNewCost = Double.parseDouble(tokens[5]);
+                                String itemDate = tokens[6];
+                                int newItemQuantity = itemQuan - 1;
+
                                 // Use tokens to create Items object
-                                Items item = new Items(itemType,itemName,itemQuan,itemCost,itemDate);
+                                Items items = new Items(itemType,itemName,newItemQuantity,itemCost,itemDiscount,itemNewCost,itemDate);
 
-
+                                // for each item in itemCart
+                                for (Items i : itemCart.getItems()){
+                                    // if item in the TableView is also in itemsLog.txt
+                                    if (i.getItemName().equals(itemName)){
+                                        // updated line with updated item quantity
+                                        newLine = items.toString();
+                                        System.out.println(newLine);
+                                        System.out.println(oldContent);
+                                        newContent = oldContent.replaceAll(readLine,newLine);
+                                        oldContent = "";
+                                    }
+                                }
                             }
+                            newContent = newContent + oldContent;
+                            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("itemsLog.txt"));
+                            bufferedWriter.write(newContent);
+                            bufferedWriter.close();
+                            bufferedReader.close();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -318,7 +342,6 @@ public class UserPurchasePage {
     public void UserMainPage(Stage primaryStage) throws IOException {
         UserMainPage userMainPage = new UserMainPage(primaryStage);
     }
-
 
 
 }

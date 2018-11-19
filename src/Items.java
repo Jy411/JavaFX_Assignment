@@ -5,9 +5,9 @@ public class Items {
     private int itemQuantity;
     private double itemCost;
     private String dateAdded;
-    private int totalSold;
     private double itemDiscount;
     private double itemNewCost;
+    private int totalSold;
 
     public Items(String itemName, double itemCost, double itemDiscount, double itemNewCost) {
         this.itemName = itemName;

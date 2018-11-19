@@ -30,6 +30,26 @@
     -fx-background-color: #95a5a6;
 }
 
+#changePassword{
+    -fx-background-color: #7f8c8d;
+    -fx-pref-width: 80;
+    -fx-pref-height: 50;
+    -fx-font-family: Arial;
+    -fx-font-weight: bold;
+    -fx-font-size: 10;
+    -fx-text-fill: white;
+    -fx-text-alignment: center;
+}
+
+#changePassword:hover{
+    -fx-border-color: #95a5a6;
+}
+
+#changePassword:pressed{
+    -fx-background-color: #95a5a6;
+}
+
+
 #loginButton{
     -fx-background-color: #7f8c8d;
     -fx-min-width: 80;

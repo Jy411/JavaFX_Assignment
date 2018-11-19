@@ -89,7 +89,7 @@ public class UserMainPage {
 
         // last login time function
         Label lastLogin = new Label("");
-        File loginInfo = new File("adminLoginData.txt");
+        File loginInfo = new File("userLoginData.txt");
         BufferedReader bufferedReader = new BufferedReader(new FileReader(loginInfo));
         if (loginInfo.createNewFile()){
             System.out.println("File created");

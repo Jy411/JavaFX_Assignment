@@ -15,11 +15,10 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+import org.controlsfx.control.Notifications;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
@@ -96,7 +95,7 @@ public class LoginPage_User extends Application {
         Date date = new Date();
         SimpleDateFormat simpleDate =
                 new SimpleDateFormat("E, dd/MM/yyyy 'at' hh:mm:ss a");
-        File loginInfo = new File("adminLoginData.txt");
+        File loginInfo = new File("userLoginData.txt");
         if (loginInfo.createNewFile()){
             System.out.println("File created");
         }
@@ -107,15 +106,31 @@ public class LoginPage_User extends Application {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    Scanner s = new Scanner(new File("user.txt"));
-                    while(s.hasNextLine()) {
-                        if(usernameField.getText().equals(s.next()) && passwordField.getText().equals(s.next())) {
-                            /// write to file here
-                            UserPage(primaryStage); }
+                    File adminLogin = new File("user.txt");
+                    BufferedReader reader = new BufferedReader(new FileReader(adminLogin));
+                    String readLine;
+                    while ((readLine = reader.readLine()) != null) {
+                        String delimiter = ",";
+                        String[] tokens = readLine.split(delimiter);
+                        String username = tokens[0];
+                        String password = tokens[1];
+                        if (usernameField.getText().equals(username) && passwordField.getText().equals(password)){
+                            // write date of login to adminLoginData.txt here
+                            writer.write(simpleDate.format(date) + "\n");
+                            writer.close();
+                            // creates pop up notification at the corner
+                            Notifications.create()
+                                    .title("Login Successful!")
+                                    .text("You have Logged In as User")
+                                    .hideAfter(new Duration(2000))
+                                    .showInformation();
+                            UserPage(primaryStage);
+                        }
                     }
-                }  catch (IOException e) {
+                } catch (IOException e1) {
                     // TODO Auto-generated catch block
-                    e.printStackTrace(); }
+                    e1.printStackTrace();
+                }
             }
         });
 

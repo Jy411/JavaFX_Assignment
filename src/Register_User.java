@@ -26,7 +26,6 @@ public class Register_User extends Application {
         GridPane gridPane = createRegistrationFormPane();
         // Add UI controls to the registration form grid pane
         // Add Header
-
         Label headerLabel = new Label("User Registration Form");
         headerLabel.setFont(Font.font("Arial", FontWeight.BOLD, 24));
         gridPane.add(headerLabel, 0,0,2,1);
@@ -34,7 +33,7 @@ public class Register_User extends Application {
         GridPane.setMargin(headerLabel, new Insets(20, 0,20,0));
 
         // Add Name Label
-        Label nameLabel = new Label("Full Name : ");
+        Label nameLabel = new Label("Username : ");
         gridPane.add(nameLabel, 0,1);
 
         // Add Name Text Field
@@ -42,25 +41,14 @@ public class Register_User extends Application {
         nameField.setPrefHeight(40);
         gridPane.add(nameField, 1,1);
 
-
-        // Add Email Label
+        // Add Password Label
         Label passwordLabel = new Label("Password : ");
         gridPane.add(passwordLabel, 0, 2);
 
-        // Add Email Text Field
-        TextField passwordField = new TextField();
+        // Add Password Text Field
+        PasswordField passwordField = new PasswordField();
         passwordField.setPrefHeight(40);
         gridPane.add(passwordField, 1, 2);
-
-       /* // Add Password Label
-        Label cpasswordLabel = new Label("Confirm Password : ");
-        gridPane.add(cpasswordLabel, 0, 3);
-
-        // Add Password Field
-        PasswordField cpasswordField = new PasswordField();
-        cpasswordField.setPrefHeight(40);
-        gridPane.add(cpasswordField, 1, 3);*/
-
 
         // Add Submit Button
         Button submitButton = new Button("Submit");
@@ -82,53 +70,33 @@ public class Register_User extends Application {
         GridPane.setHalignment(back, HPos.LEFT);
         GridPane.setMargin(back, new Insets(20, 0,20,0));
 
-
         submitButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 if(nameField.getText().isEmpty()) {
-                    showAlert(Alert.AlertType.ERROR, gridPane.getScene().getWindow(), "Form Error!", "Please enter your name");
+                    showAlert(Alert.AlertType.ERROR, gridPane.getScene().getWindow(), "Form Error!", "Please enter username");
                     return;
                 }
                 if(passwordField.getText().isEmpty()) {
                     showAlert(Alert.AlertType.ERROR, gridPane.getScene().getWindow(), "Form Error!", "Please enter your password");
                     return;
                 }
-                /*if(cpasswordField.getText().isEmpty()) {
-                    showAlert(Alert.AlertType.ERROR, gridPane.getScene().getWindow(), "Form Error!", "Please enter your confirm password");
-                    return;
-                }*/
-
-
-                {
-                    if(passwordField!=null) {
-                        try (PrintWriter out = new PrintWriter(new BufferedWriter(
-                                new FileWriter("user.txt", true)))) {
-                            out.printf(nameField.getText());
-                            out.printf(" ");
-                            out.println(passwordField.getText());
-
-                        }
-
-                        catch (IOException ioe) {
-                            ioe.printStackTrace();
-                        }
-                    }}
-
-
-
-
-
-
-                showAlert(Alert.AlertType.CONFIRMATION, gridPane.getScene().getWindow(), "Registration Successful!", "Welcome " + nameField.getText());
-
-
-
-
-
-
+                if(passwordField!=null) {
+                    try (PrintWriter out = new PrintWriter(new BufferedWriter(
+                            new FileWriter("user.txt", true)))) {
+                        out.printf(nameField.getText());
+                        out.printf(",");
+                        out.println(passwordField.getText());
+                        showAlert(Alert.AlertType.INFORMATION, gridPane.getScene().getWindow(), "Registration Successful!", "Successfully Registered " + nameField.getText());
+                        LoginSelection loginSelection = new LoginSelection();
+                        loginSelection.start(primaryStage);
+                    } catch (IOException ioe) {
+                        ioe.printStackTrace();
+                    }
+                }
             }
         });
+
         back.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -139,12 +107,12 @@ public class Register_User extends Application {
                 }
             }
         });
+
         // Create a scene with registration form grid pane as the root node
         Scene scene = new Scene(gridPane, 500, 500);
         scene.getStylesheets().add(getClass().getResource("Buttons.css").toExternalForm());
         // Set the scene in primary stage
         primaryStage.setScene(scene);
-
         primaryStage.show();
     }
 

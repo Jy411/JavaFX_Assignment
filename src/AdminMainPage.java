@@ -13,6 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 import java.io.BufferedReader;
@@ -112,14 +113,15 @@ public class AdminMainPage {
         }
 
         //Change Password
-        Button changePassword = new Button("Change Password");
-        changePassword.setId("logoutButton");
+        Button changePassword = new Button("Change\nPassword");
+        changePassword.setId("changePassword");
+        changePassword.setWrapText(true);
 
         // BOTTOM will have admin profile info and logout
         Button logoutButton = new Button("Logout");
         logoutButton.setId("logoutButton");
         VBox vBox = new VBox();
-        vBox.getChildren().addAll(lastLogin,logoutButton,changePassword);
+        vBox.getChildren().addAll(lastLogin,changePassword,logoutButton);
 
         // change password button function
         changePassword.setOnAction(new EventHandler<ActionEvent>() {
