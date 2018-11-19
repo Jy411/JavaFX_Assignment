@@ -279,6 +279,13 @@ public class UserPurchasePage {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
+                        // creates pop up notification at the corner
+                        Notifications.create()
+                                .title("Purchase Complete")
+                                .text("Have a good day!")
+                                .hideAfter(new Duration(1000))
+                                .showInformation();
+                        stage.close();
                     }
                 });
 

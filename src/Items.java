@@ -16,7 +16,8 @@ public class Items {
         this.itemNewCost = itemNewCost;
     }
 
-    public Items(String itemType, String itemName, int itemQuantity, double itemCost, double itemDiscount, double itemNewCost, String dateAdded) {
+    public Items(String itemType, String itemName, int itemQuantity, double itemCost, double itemDiscount,
+                 double itemNewCost, String dateAdded) {
         this.itemType = itemType;
         this.itemName = itemName;
         this.itemQuantity = itemQuantity;
